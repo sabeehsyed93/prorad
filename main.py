@@ -36,9 +36,15 @@ else:
 app = FastAPI(title="Radiology Transcription API")
 
 # Add CORS middleware
+origins = [
+    "http://localhost:3000",  # Local development
+    "https://prorad.netlify.app",  # Production frontend (update this with your Netlify URL)
+    "http://localhost:5173",  # Vite dev server
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with specific origins
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

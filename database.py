@@ -11,35 +11,20 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Create database engine
-try:
-    DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./radiology_reports.db")
-    logger.info("Initializing database connection to: %s", DATABASE_URL.split("@")[0].split(":")[0])
-    
-    # Handle PostgreSQL database URLs
-    if DATABASE_URL.startswith("postgres://"):
-        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
-    
-    # Configure SQLAlchemy engine with connection pooling and retry settings
-    engine = create_engine(
-        DATABASE_URL,
-        pool_size=5,
-        max_overflow=0,
-        pool_timeout=30,
-        pool_recycle=1800,  # Recycle connections after 30 minutes
-        pool_pre_ping=True,  # Enable connection health checks
-        connect_args={
-            "connect_timeout": 10  # Connection timeout in seconds
-        }
-    )
-    
-    # Test the connection
-    with engine.connect() as conn:
-        conn.execute("SELECT 1")
-        logger.info("Database connection successful")
-        
-except Exception as e:
-    logger.error(f"Database connection error: {str(e)}")
-    raise
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./radiology_reports.db")
+logger.info("Initializing database connection to: %s", DATABASE_URL.split("@")[0].split(":")[0])
+
+# Handle PostgreSQL database URLs
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+# Configure SQLAlchemy engine with connection pooling and retry settings
+engine = create_engine(
+    DATABASE_URL,
+    pool_pre_ping=True,  # Enable connection health checks
+    pool_recycle=1800,  # Recycle connections after 30 minutes
+    echo=True  # Log all SQL statements for debugging
+)
 
 # Create session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

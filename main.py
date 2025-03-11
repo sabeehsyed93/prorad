@@ -48,12 +48,21 @@ app.add_middleware(
 app.include_router(reports.router, tags=["reports"])
 
 # Initialize database tables
-try:
-    create_tables()
-    logger.info("Database tables created successfully")
-except Exception as e:
-    logger.error(f"Error creating database tables: {str(e)}")
-    # Don't raise the error here, let the app start even if tables exist
+def init_db():
+    retries = 3
+    for attempt in range(retries):
+        try:
+            create_tables()
+            logger.info("Database tables created successfully")
+            return
+        except Exception as e:
+            if attempt == retries - 1:  # Last attempt
+                logger.error("Failed to initialize database after %d attempts: %s", retries, str(e))
+            else:
+                logger.warning("Database initialization attempt %d failed: %s. Retrying...", attempt + 1, str(e))
+
+# Try to initialize the database
+init_db()
 
 class ProcessTextRequest(BaseModel):
     text: str

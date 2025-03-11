@@ -6,7 +6,12 @@ import os
 
 # Create database engine
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./radiology_reports.db")
-engine = create_engine(DATABASE_URL)
+
+# Handle PostgreSQL database URLs from Railway
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+engine = create_engine(DATABASE_URL, pool_size=5, max_overflow=0)
 
 # Create session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

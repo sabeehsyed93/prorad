@@ -18,7 +18,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Import database and reports modules
-from database import create_tables, get_db
+from database import create_tables, get_db, SessionLocal, Template as DBTemplate
 import reports
 
 # Load environment variables
@@ -160,9 +160,9 @@ default_templates = {
 # Initialize default templates in database
 def init_templates(db: Session):
     for name, content in default_templates.items():
-        existing = db.query(database.Template).filter(database.Template.name == name).first()
+        existing = db.query(DBTemplate).filter(DBTemplate.name == name).first()
         if not existing:
-            template = database.Template(name=name, content=content)
+            template = DBTemplate(name=name, content=content)
             db.add(template)
     db.commit()
 

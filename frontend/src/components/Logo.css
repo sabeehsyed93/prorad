@@ -1,0 +1,56 @@
+@import url('https://fonts.cdnfonts.com/css/sf-pro-display');
+
+.app-title {
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  display: block;
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s ease-in-out;
+}
+
+.logo-container.rainbow-glow .logo {
+  filter: drop-shadow(0 0 10px rgba(145, 119, 199, 0.6))
+         drop-shadow(0 0 15px rgba(71, 150, 227, 0.4))
+         drop-shadow(0 0 20px rgba(202, 102, 115, 0.3));
+  animation: logoGlow 3s ease-in-out infinite;
+}
+
+.logo-container.rainbow-glow:hover .logo {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 15px rgba(145, 119, 199, 0.8))
+         drop-shadow(0 0 20px rgba(71, 150, 227, 0.6))
+         drop-shadow(0 0 25px rgba(202, 102, 115, 0.5));
+}
+
+@keyframes logoGlow {
+  0% {
+    filter: drop-shadow(0 0 10px rgba(145, 119, 199, 0.6))
+           drop-shadow(0 0 15px rgba(71, 150, 227, 0.4))
+           drop-shadow(0 0 20px rgba(202, 102, 115, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 15px rgba(145, 119, 199, 0.8))
+           drop-shadow(0 0 20px rgba(71, 150, 227, 0.6))
+           drop-shadow(0 0 25px rgba(202, 102, 115, 0.5));
+  }
+  100% {
+    filter: drop-shadow(0 0 10px rgba(145, 119, 199, 0.6))
+           drop-shadow(0 0 15px rgba(71, 150, 227, 0.4))
+           drop-shadow(0 0 20px rgba(202, 102, 115, 0.3));
+  }
+}

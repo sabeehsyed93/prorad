@@ -1,0 +1,56 @@
+@keyframes movingShadow {
+  0% {
+    box-shadow: -25px 0 25px -8px rgba(145, 119, 199, 0.5), 
+                0 0 25px rgba(71, 150, 227, 0.5),
+                25px 0 25px -8px rgba(202, 102, 115, 0.5);
+  }
+  33% {
+    box-shadow: -25px 0 25px -8px rgba(202, 102, 115, 0.5),
+                0 0 25px rgba(145, 119, 199, 0.5),
+                25px 0 25px -8px rgba(71, 150, 227, 0.5);
+  }
+  66% {
+    box-shadow: -25px 0 25px -8px rgba(71, 150, 227, 0.5),
+                0 0 25px rgba(202, 102, 115, 0.5),
+                25px 0 25px -8px rgba(145, 119, 199, 0.5);
+  }
+  100% {
+    box-shadow: -25px 0 25px -8px rgba(145, 119, 199, 0.5), 
+                0 0 25px rgba(71, 150, 227, 0.5),
+                25px 0 25px -8px rgba(202, 102, 115, 0.5);
+  }
+}
+
+.rainbow-glow {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.rainbow-glow.processing {
+  animation: geminiGlow 3s ease-in-out infinite;
+}
+
+/* Add a subtle pulsing effect */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.rainbow-glow.processing {
+  animation: 
+    movingShadow 3s linear infinite,
+    pulse 2s ease-in-out infinite;
+  background-color: #90caf9 !important;
+}
+
+/* Version without background color change */
+.rainbow-glow-text.processing {
+  animation: movingShadow 3s linear infinite;
+}

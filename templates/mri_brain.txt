@@ -1,0 +1,33 @@
+# MRI Brain Report Template
+
+## Clinical Information
+[clinical_information]
+
+## Technique
+MRI of the brain was performed without and with intravenous contrast.
+
+## Findings
+
+### Brain Parenchyma
+[brain_parenchyma_findings]
+
+### Ventricles and CSF Spaces
+[ventricles_findings]
+
+### Extra-axial Spaces
+[extra_axial_findings]
+
+### Vascular Structures
+[vascular_findings]
+
+### Skull Base and Cranial Nerves
+[skull_base_findings]
+
+### Orbits
+[orbit_findings]
+
+### Paranasal Sinuses and Mastoids
+[sinus_findings]
+
+## Impression
+[impression]

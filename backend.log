@@ -1,0 +1,339 @@
+INFO:     Will watch for changes in these directories: ['/Users/sabeehsyed/Documents/Coding/Rad_transcription/backend']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [10073] using StatReload
+/Users/sabeehsyed/Documents/Coding/Rad_transcription/venv/lib/python3.13/site-packages/pydantic/_internal/_config.py:345: UserWarning: Valid config keys have changed in V2:
+* 'orm_mode' has been renamed to 'from_attributes'
+  warnings.warn(message, UserWarning)
+INFO:     Started server process [10076]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:0 - "POST /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: okay i compared it to the previous ct scan from first of january 2010. looks like there is some consolidation in the right lower lobe and there is a ground glass module which measures 4 mm in the left up a lobe doesn't need to be followed upotherwise everything is fine
+After adding spaces:  okay i compared it to the previous ct scan from first of january 2010. looks like there is some consolidation in the right lower lobe and there is a ground glass module which measures 4 mm in the left up a lobe doesn't need to be followed upotherwise everything is fine 
+Final text: okay i compared it to the previous ct scan from first of january 2010. looks like there is some consolidation in the right lower lobe and there is a ground glass module which measures 4 mm in the left up a lobe doesn't need to be followed upotherwise everything is fine
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "PUT /templates/Chest%20CT HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: okay i compared it to the previous ct scan from first of january 2010. looks like there is some consolidation in the right lower lobe and there is a ground glass module which measures 4 mm in the left up a lobe doesn't need to be followed upotherwise everything is fine
+After adding spaces:  okay i compared it to the previous ct scan from first of january 2010. looks like there is some consolidation in the right lower lobe and there is a ground glass module which measures 4 mm in the left up a lobe doesn't need to be followed upotherwise everything is fine 
+Final text: okay i compared it to the previous ct scan from first of january 2010. looks like there is some consolidation in the right lower lobe and there is a ground glass module which measures 4 mm in the left up a lobe doesn't need to be followed upotherwise everything is fine
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "PUT /templates/Chest%20CT HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "PUT /templates/Chest%20CT HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: okay i compared it to the previous ct scan from first of january 2010. looks like there is some consolidation in the right lower lobe and there is a ground glass module which measures 4 mm in the left up a lobe doesn't need to be followed upotherwise everything is fine
+After adding spaces:  okay i compared it to the previous ct scan from first of january 2010. looks like there is some consolidation in the right lower lobe and there is a ground glass module which measures 4 mm in the left up a lobe doesn't need to be followed upotherwise everything is fine 
+Final text: okay i compared it to the previous ct scan from first of january 2010. looks like there is some consolidation in the right lower lobe and there is a ground glass module which measures 4 mm in the left up a lobe doesn't need to be followed upotherwise everything is fine
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "PUT /templates/Chest%20CT HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: okay i compared it to the previous ct scan from first of january 2010. looks like there is some consolidation in the right lower lobe and there is a ground glass module which measures 4 mm in the left up a lobe doesn't need to be followed upotherwise everything is fine
+After adding spaces:  okay i compared it to the previous ct scan from first of january 2010. looks like there is some consolidation in the right lower lobe and there is a ground glass module which measures 4 mm in the left up a lobe doesn't need to be followed upotherwise everything is fine 
+Final text: okay i compared it to the previous ct scan from first of january 2010. looks like there is some consolidation in the right lower lobe and there is a ground glass module which measures 4 mm in the left up a lobe doesn't need to be followed upotherwise everything is fine
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "POST /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "DELETE /templates/c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: and there is a five millimeter nodu which is suspicious and needs to be followed up after three months.. oh by the way this is a non contrast studythere is a small height is herniawithin the upper lobes and looks like it's predominantly on the left up a lobe there's also some buy basil atelectasislooks like there's multifocal perry broncovascular ground glass modulescompared to the previous ct from march 2024.
+After adding spaces:  and there is a five millimeter nodu which is suspicious and needs to be followed up after three months.. oh by the way this is a non contrast studythere is a small height is herniawithin the upper lobes and looks like it's predominantly on the left up a lobe there's also some buy basil atelectasislooks like there's multifocal perry broncovascular ground glass modulescompared to the previous ct from march 2024. 
+Final text: and there is a five millimeter nodu which is suspicious and needs to be followed up after three months.. oh by the way this is a non contrast studythere is a small height is herniawithin the upper lobes and looks like it's predominantly on the left up a lobe there's also some buy basil atelectasislooks like there's multifocal perry broncovascular ground glass modulescompared to the previous ct from march 2024.
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: okay i've made comparison to the previous ct from march 2024 this is a non contrast studyi can see that there is some perry broncovascular ground glass capacitation in the right apollothat's the right upper lobe and it looks like it's slightlyless prominent on the left up a lobe there is a suspicious module in the right lower lobethere's no plural effusion though and there is a small height is hernia
+After adding spaces:  okay i've made comparison to the previous ct from march 2024 this is a non contrast studyi can see that there is some perry broncovascular ground glass capacitation in the right apollothat's the right upper lobe and it looks like it's slightlyless prominent on the left up a lobe there is a suspicious module in the right lower lobethere's no plural effusion though and there is a small height is hernia 
+Final text: okay i've made comparison to the previous ct from march 2024 this is a non contrast studyi can see that there is some perry broncovascular ground glass capacitation in the right apollothat's the right upper lobe and it looks like it's slightlyless prominent on the left up a lobe there is a suspicious module in the right lower lobethere's no plural effusion though and there is a small height is hernia
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+Original text: okay i've made comparison to the previous ct from march 2024 this is a non contrast studyi can see that there is some perry broncovascular ground glass capacitation in the right apollothat's the right upper lobe and it looks like it's slightlyless prominent on the left up a lobe there is a suspicious module in the right lower lobethere's no plural effusion though and there is a small height is hernia
+After adding spaces:  okay i've made comparison to the previous ct from march 2024 this is a non contrast studyi can see that there is some perry broncovascular ground glass capacitation in the right apollothat's the right upper lobe and it looks like it's slightlyless prominent on the left up a lobe there is a suspicious module in the right lower lobethere's no plural effusion though and there is a small height is hernia 
+Final text: okay i've made comparison to the previous ct from march 2024 this is a non contrast studyi can see that there is some perry broncovascular ground glass capacitation in the right apollothat's the right upper lobe and it looks like it's slightlyless prominent on the left up a lobe there is a suspicious module in the right lower lobethere's no plural effusion though and there is a small height is hernia
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: now this app is pretty good and it seems to be working relatively well.but i would like to know if it would work perfectly.now it looks like there isn't a space being added how can we fix this oh it is working nice
+After adding spaces:  now this app is pretty good and it seems to be working relatively well.but i would like to know if it would work perfectly.now it looks like there isn't a space being added how can we fix this oh it is working nice 
+Final text: now this app is pretty good and it seems to be working relatively well.but i would like to know if it would work perfectly.now it looks like there isn't a space being added how can we fix this oh it is working nice
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+Original text: now this app is pretty good and it seems to be working relatively well.but i would like to know if it would work perfectly.now it looks like there isn't a space being added how can we fix this oh it is working nice
+After adding spaces:  now this app is pretty good and it seems to be working relatively well.but i would like to know if it would work perfectly.now it looks like there isn't a space being added how can we fix this oh it is working nice 
+Final text: now this app is pretty good and it seems to be working relatively well.but i would like to know if it would work perfectly.now it looks like there isn't a space being added how can we fix this oh it is working nice
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: ergvheythvwrgfgdgwregdrdgdrt
+After adding spaces:  ergvheythvwrgfgdgwregdrdgdrt 
+Final text: ergvheythvwrgfgdgwregdrdgdrt
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: chest ct . completely normal
+After adding spaces:  chest ct . completely normal 
+Final text: chest ct . completely normal
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+Original text: chest ct . completely normal
+After adding spaces:  chest ct . completely normal 
+Final text: chest ct . completely normal
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: chest ct . completely normal
+After adding spaces:  chest ct . completely normal 
+Final text: chest ct . completely normal
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: chest ct . completely normal
+After adding spaces:  chest ct . completely normal 
+Final text: chest ct . completely normal
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: chest ct . completely normal
+After adding spaces:  chest ct . completely normal 
+Final text: chest ct . completely normal
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+Original text: chest ct . completely normal
+After adding spaces:  chest ct . completely normal 
+Final text: chest ct . completely normal
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: chest ct . completely normal
+After adding spaces:  chest ct . completely normal 
+Final text: chest ct . completely normal
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: chest ct . completely normal
+After adding spaces:  chest ct . completely normal 
+Final text: chest ct . completely normal
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: chest ct . completely normal
+After adding spaces:  chest ct . completely normal 
+Final text: chest ct . completely normal
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: chest ct . completely normal
+After adding spaces:  chest ct . completely normal 
+Final text: chest ct . completely normal
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+Original text: chest ct . completely normal
+After adding spaces:  chest ct . completely normal 
+Final text: chest ct . completely normal
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: chest ct . completely normal
+After adding spaces:  chest ct . completely normal 
+Final text: chest ct . completely normal
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+Original text: chest ct . completely normal
+After adding spaces:  chest ct . completely normal 
+Final text: chest ct . completely normal
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+Original text: chest ct . completely normal
+After adding spaces:  chest ct . completely normal 
+Final text: chest ct . completely normal
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+Original text: chest ct . completely normal
+After adding spaces:  chest ct . completely normal 
+Final text: chest ct . completely normal
+Gemini API error: 429 Resource has been exhausted (e.g. check quota).
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+Original text: chest ct . completely normal
+After adding spaces:  chest ct . completely normal 
+Final text: chest ct . completely normal
+Gemini API error: 429 Resource has been exhausted (e.g. check quota).
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: chest ct . completely normal
+After adding spaces:  chest ct . completely normal 
+Final text: chest ct . completely normal
+Gemini API error: 429 Resource has been exhausted (e.g. check quota).
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: Error calling Gemini API: 429 Resource has been exhausted (e.g. check quota).
+After adding spaces:  error calling gemini api: 429 resource has been exhausted (e.g. check quota). 
+Final text: error calling gemini api: 429 resource has been exhausted (e.g. check quota).
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: normal study
+After adding spaces:  normal study 
+Final text: normal study
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: normal study
+After adding spaces:  normal study 
+Final text: normal study
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+Original text: normal study
+After adding spaces:  normal study 
+Final text: normal study
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+Original text: normal study
+After adding spaces:  normal study 
+Final text: normal study
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+Original text: normal study
+After adding spaces:  normal study 
+Final text: normal study
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: ok so i've had a look at the ct scan from march 2024. this is a non-contract study. looks like this some patchy consolidation in the right lower zone and there's also a ground glass nodule in the left up a lobe but it's 4 mm and doesn't need to be followed up there's also a small height is hernia .
+After adding spaces:  ok so i've had a look at the ct scan from march 2024. this is a non-contract study. looks like this some patchy consolidation in the right lower zone and there's also a ground glass nodule in the left up a lobe but it's 4 mm and doesn't need to be followed up there's also a small height is hernia . 
+Final text: ok so i've had a look at the ct scan from march 2024. this is a non-contract study. looks like this some patchy consolidation in the right lower zone and there's also a ground glass nodule in the left up a lobe but it's 4 mm and doesn't need to be followed up there's also a small height is hernia .
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+Original text: ok so i've had a look at the ct scan from march 2024. this is a non-contract study. looks like this some patchy consolidation in the right lower zone and there's also a ground glass nodule in the left up a lobe but it's 4 mm and doesn't need to be followed up there's also a small height is hernia .
+After adding spaces:  ok so i've had a look at the ct scan from march 2024. this is a non-contract study. looks like this some patchy consolidation in the right lower zone and there's also a ground glass nodule in the left up a lobe but it's 4 mm and doesn't need to be followed up there's also a small height is hernia . 
+Final text: ok so i've had a look at the ct scan from march 2024. this is a non-contract study. looks like this some patchy consolidation in the right lower zone and there's also a ground glass nodule in the left up a lobe but it's 4 mm and doesn't need to be followed up there's also a small height is hernia .
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+Original text: ok so i've had a look at the ct scan from march 2024. this is a non-contract study. looks like this some patchy consolidation in the right lower zone and there's also a ground glass nodule in the left up a lobe but it's 4 mm and doesn't need to be followed up there's also a small height is hernia .
+After adding spaces:  ok so i've had a look at the ct scan from march 2024. this is a non-contract study. looks like this some patchy consolidation in the right lower zone and there's also a ground glass nodule in the left up a lobe but it's 4 mm and doesn't need to be followed up there's also a small height is hernia . 
+Final text: ok so i've had a look at the ct scan from march 2024. this is a non-contract study. looks like this some patchy consolidation in the right lower zone and there's also a ground glass nodule in the left up a lobe but it's 4 mm and doesn't need to be followed up there's also a small height is hernia .
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: so if i start recording another thing now will it save as another template or not
+After adding spaces:  so if i start recording another thing now will it save as another template or not 
+Final text: so if i start recording another thing now will it save as another template or not
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: what hapens
+
+After adding spaces:  what hapens
+ 
+Final text: what hapens
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: sss
+After adding spaces:  sss 
+Final text: sss
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: okay i've had a look at the previous ct from march 2024 . this is a non contrast ct chest looks like there is some consolidation in the right lower lobe and looks like there's a small module which is peripheral so we aren't concerned about it it's gonna be an intrapomon's they're on any suspicious modules can't see any effusion heart looks okay everything else is fine 
+After adding spaces:  okay i've had a look at the previous ct from march 2024 . this is a non contrast ct chest looks like there is some consolidation in the right lower lobe and looks like there's a small module which is peripheral so we aren't concerned about it it's gonna be an intrapomon's they're on any suspicious modules can't see any effusion heart looks okay everything else is fine  
+Final text: okay i've had a look at the previous ct from march 2024 . this is a non contrast ct chest looks like there is some consolidation in the right lower lobe and looks like there's a small module which is peripheral so we aren't concerned about it it's gonna be an intrapomon's they're on any suspicious modules can't see any effusion heart looks okay everything else is fine
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+Original text: okay i've had a look at the previous ct from march 2024 . this is a non contrast ct chest looks like there is some consolidation in the right lower lobe and looks like there's a small module which is peripheral so we aren't concerned about it it's gonna be an intrapomon's they're on any suspicious modules can't see any effusion heart looks okay everything else is fine okay so in that and i'm going to select my template which i've got a ct chess template and then i'll just click this button and processes it with 
+After adding spaces:  okay i've had a look at the previous ct from march 2024 . this is a non contrast ct chest looks like there is some consolidation in the right lower lobe and looks like there's a small module which is peripheral so we aren't concerned about it it's gonna be an intrapomon's they're on any suspicious modules can't see any effusion heart looks okay everything else is fine okay so in that and i'm going to select my template which i've got a ct chess template and then i'll just click this button and processes it with  
+Final text: okay i've had a look at the previous ct from march 2024 . this is a non contrast ct chest looks like there is some consolidation in the right lower lobe and looks like there's a small module which is peripheral so we aren't concerned about it it's gonna be an intrapomon's they're on any suspicious modules can't see any effusion heart looks okay everything else is fine okay so in that and i'm going to select my template which i've got a ct chess template and then i'll just click this button and processes it with
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: okay i've had a look at the previous ct from march 2024 . this is a non contrast ct chest looks like there is some consolidation in the right lower lobe and looks like there's a small module which is peripheral so we aren't concerned about it it's gonna be an intrapomon's they're on any suspicious modules can't see any effusion heart looks okay everything else is fine 
+After adding spaces:  okay i've had a look at the previous ct from march 2024 . this is a non contrast ct chest looks like there is some consolidation in the right lower lobe and looks like there's a small module which is peripheral so we aren't concerned about it it's gonna be an intrapomon's they're on any suspicious modules can't see any effusion heart looks okay everything else is fine  
+Final text: okay i've had a look at the previous ct from march 2024 . this is a non contrast ct chest looks like there is some consolidation in the right lower lobe and looks like there's a small module which is peripheral so we aren't concerned about it it's gonna be an intrapomon's they're on any suspicious modules can't see any effusion heart looks okay everything else is fine
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+Original text: okay i've had a look at the previous ct from march 2024 . this is a non contrast ct chest looks like there is some consolidation in the right lower lobe and looks like there's a small module which is peripheral so we aren't concerned about it .it's gonna be an intrapomon's they're on any suspicious modules can't see any effusion heart looks okay everything else is fine actually let's not talk about the nodule in the report stop so there isn't any nodule actually going back stop .
+After adding spaces:  okay i've had a look at the previous ct from march 2024 . this is a non contrast ct chest looks like there is some consolidation in the right lower lobe and looks like there's a small module which is peripheral so we aren't concerned about it .it's gonna be an intrapomon's they're on any suspicious modules can't see any effusion heart looks okay everything else is fine actually let's not talk about the nodule in the report stop so there isn't any nodule actually going back stop . 
+Final text: okay i've had a look at the previous ct from march 2024 . this is a non contrast ct chest looks like there is some consolidation in the right lower lobe and looks like there's a small module which is peripheral so we aren't concerned about it .it's gonna be an intrapomon's they're on any suspicious modules can't see any effusion heart looks okay everything else is fine actually let's not talk about the nodule in the report stop so there isn't any nodule actually going back stop .
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:0 - "GET /templates HTTP/1.1" 200 OK
+Original text: ok so this is a non-contractity chest i've had a look at the previous scan from march 2022 okay so the previously known nodule which measured about five millimeters in the right up a little has resolved looks like there's some consolidation in the left lower lobe which is quite patchy and there's some stuff around the airways so let's call it perry broncovascular patchy consolidation there isn't in a fusion the heart looks normal and everything goes else is autofind
+After adding spaces:  ok so this is a non-contractity chest i've had a look at the previous scan from march 2022 okay so the previously known nodule which measured about five millimeters in the right up a little has resolved looks like there's some consolidation in the left lower lobe which is quite patchy and there's some stuff around the airways so let's call it perry broncovascular patchy consolidation there isn't in a fusion the heart looks normal and everything goes else is autofind 
+Final text: ok so this is a non-contractity chest i've had a look at the previous scan from march 2022 okay so the previously known nodule which measured about five millimeters in the right up a little has resolved looks like there's some consolidation in the left lower lobe which is quite patchy and there's some stuff around the airways so let's call it perry broncovascular patchy consolidation there isn't in a fusion the heart looks normal and everything goes else is autofind
+INFO:     127.0.0.1:0 - "POST /process HTTP/1.1" 200 OK

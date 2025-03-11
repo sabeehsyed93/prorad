@@ -1,0 +1,346 @@
+
+> rad-transcription-frontend@0.1.0 start
+> react-scripts start
+
+(node:10098) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:10098) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+Starting the development server...
+
+Failed to compile.
+
+[eslint] 
+src/App.js
+Syntax error: Unterminated JSX contents. (584:20) (584:20)
+ERROR in ./src/App.js
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/src/App.js: Unterminated JSX contents. (584:20)
+
+  582 |         </Container>
+  583 |       </Box>
+> 584 |     </ThemeProvider>
+      |                     ^
+  585 |   );
+  586 | }
+  587 |
+    at constructor (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:360:19)
+    at FlowParserMixin.raise (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:3327:19)
+    at FlowParserMixin.jsxReadToken (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6621:20)
+    at FlowParserMixin.getTokenFromCode (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6947:12)
+    at FlowParserMixin.getTokenFromCode (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:5419:13)
+    at FlowParserMixin.nextToken (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:2510:10)
+    at FlowParserMixin.next (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:2423:10)
+    at FlowParserMixin.eat (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:2427:12)
+    at FlowParserMixin.expect (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:3656:15)
+    at FlowParserMixin.jsxParseClosingElementAt (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6853:10)
+    at FlowParserMixin.jsxParseElementAt (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6868:37)
+    at FlowParserMixin.jsxParseElementAt (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6871:32)
+    at FlowParserMixin.jsxParseElement (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6922:17)
+    at FlowParserMixin.parseExprAtom (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6932:19)
+    at FlowParserMixin.parseExprSubscripts (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10758:23)
+    at FlowParserMixin.parseUpdate (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10743:21)
+    at FlowParserMixin.parseMaybeUnary (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10723:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10576:61)
+    at FlowParserMixin.parseExprOps (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10581:23)
+    at FlowParserMixin.parseMaybeConditional (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10558:23)
+    at FlowParserMixin.parseMaybeAssign (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10521:21)
+    at /Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:5722:39
+    at FlowParserMixin.tryParse (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:3665:20)
+    at FlowParserMixin.parseMaybeAssign (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:5722:18)
+    at /Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10491:39
+    at FlowParserMixin.allowInAnd (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12100:12)
+    at FlowParserMixin.parseMaybeAssignAllowIn (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10491:17)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:11359:28)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:5815:18)
+    at FlowParserMixin.parseExprAtom (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:11006:23)
+    at FlowParserMixin.parseExprAtom (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6937:20)
+    at FlowParserMixin.parseExprSubscripts (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10758:23)
+    at FlowParserMixin.parseUpdate (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10743:21)
+    at FlowParserMixin.parseMaybeUnary (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10723:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10576:61)
+    at FlowParserMixin.parseExprOps (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10581:23)
+    at FlowParserMixin.parseMaybeConditional (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10558:23)
+    at FlowParserMixin.parseMaybeAssign (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10521:21)
+    at FlowParserMixin.parseMaybeAssign (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:5773:18)
+    at FlowParserMixin.parseExpressionBase (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10475:23)
+    at /Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10471:39
+    at FlowParserMixin.allowInAnd (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12095:16)
+    at FlowParserMixin.parseExpression (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10471:17)
+    at FlowParserMixin.parseReturnStatement (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12786:28)
+    at FlowParserMixin.parseStatementContent (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12437:21)
+    at FlowParserMixin.parseStatementLike (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12406:17)
+    at FlowParserMixin.parseStatementLike (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:5140:24)
+    at FlowParserMixin.parseStatementListItem (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12386:17)
+    at FlowParserMixin.parseBlockOrModuleBlockBody (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12960:61)
+    at FlowParserMixin.parseBlockBody (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12953:10)
+
+ERROR in [eslint] 
+src/App.js
+  Line 584:20:  Parsing error: Unterminated JSX contents. (584:20)
+
+webpack compiled with 2 errors
+Compiling...
+Failed to compile.
+
+[eslint] 
+src/App.js
+Syntax error: Unterminated JSX contents. (584:18) (584:18)
+ERROR in ./src/App.js
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/src/App.js: Unterminated JSX contents. (584:18)
+
+  582 |       </Container>
+  583 |     </Box>
+> 584 |   </ThemeProvider>
+      |                   ^
+  585 |   );
+  586 | }
+  587 |
+    at constructor (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:360:19)
+    at FlowParserMixin.raise (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:3327:19)
+    at FlowParserMixin.jsxReadToken (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6621:20)
+    at FlowParserMixin.getTokenFromCode (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6947:12)
+    at FlowParserMixin.getTokenFromCode (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:5419:13)
+    at FlowParserMixin.nextToken (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:2510:10)
+    at FlowParserMixin.next (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:2423:10)
+    at FlowParserMixin.eat (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:2427:12)
+    at FlowParserMixin.expect (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:3656:15)
+    at FlowParserMixin.jsxParseClosingElementAt (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6853:10)
+    at FlowParserMixin.jsxParseElementAt (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6868:37)
+    at FlowParserMixin.jsxParseElementAt (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6871:32)
+    at FlowParserMixin.jsxParseElement (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6922:17)
+    at FlowParserMixin.parseExprAtom (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6932:19)
+    at FlowParserMixin.parseExprSubscripts (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10758:23)
+    at FlowParserMixin.parseUpdate (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10743:21)
+    at FlowParserMixin.parseMaybeUnary (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10723:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10576:61)
+    at FlowParserMixin.parseExprOps (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10581:23)
+    at FlowParserMixin.parseMaybeConditional (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10558:23)
+    at FlowParserMixin.parseMaybeAssign (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10521:21)
+    at /Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:5722:39
+    at FlowParserMixin.tryParse (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:3665:20)
+    at FlowParserMixin.parseMaybeAssign (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:5722:18)
+    at /Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10491:39
+    at FlowParserMixin.allowInAnd (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12100:12)
+    at FlowParserMixin.parseMaybeAssignAllowIn (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10491:17)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:11359:28)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:5815:18)
+    at FlowParserMixin.parseExprAtom (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:11006:23)
+    at FlowParserMixin.parseExprAtom (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6937:20)
+    at FlowParserMixin.parseExprSubscripts (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10758:23)
+    at FlowParserMixin.parseUpdate (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10743:21)
+    at FlowParserMixin.parseMaybeUnary (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10723:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10576:61)
+    at FlowParserMixin.parseExprOps (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10581:23)
+    at FlowParserMixin.parseMaybeConditional (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10558:23)
+    at FlowParserMixin.parseMaybeAssign (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10521:21)
+    at FlowParserMixin.parseMaybeAssign (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:5773:18)
+    at FlowParserMixin.parseExpressionBase (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10475:23)
+    at /Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10471:39
+    at FlowParserMixin.allowInAnd (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12095:16)
+    at FlowParserMixin.parseExpression (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10471:17)
+    at FlowParserMixin.parseReturnStatement (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12786:28)
+    at FlowParserMixin.parseStatementContent (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12437:21)
+    at FlowParserMixin.parseStatementLike (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12406:17)
+    at FlowParserMixin.parseStatementLike (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:5140:24)
+    at FlowParserMixin.parseStatementListItem (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12386:17)
+    at FlowParserMixin.parseBlockOrModuleBlockBody (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12960:61)
+    at FlowParserMixin.parseBlockBody (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12953:10)
+
+ERROR in [eslint] 
+src/App.js
+  Line 584:18:  Parsing error: Unterminated JSX contents. (584:18)
+
+webpack compiled with 2 errors
+Compiling...
+Failed to compile.
+
+[eslint] 
+src/App.js
+Syntax error: Unterminated JSX contents. (584:18) (584:18)
+ERROR in ./src/App.js
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/src/App.js: Unterminated JSX contents. (584:18)
+
+  582 |       </Container>
+  583 |     </Box>
+> 584 |   </ThemeProvider>
+      |                   ^
+  585 |   );
+  586 | }
+  587 |
+    at constructor (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:360:19)
+    at FlowParserMixin.raise (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:3327:19)
+    at FlowParserMixin.jsxReadToken (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6621:20)
+    at FlowParserMixin.getTokenFromCode (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6947:12)
+    at FlowParserMixin.getTokenFromCode (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:5419:13)
+    at FlowParserMixin.nextToken (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:2510:10)
+    at FlowParserMixin.next (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:2423:10)
+    at FlowParserMixin.eat (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:2427:12)
+    at FlowParserMixin.expect (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:3656:15)
+    at FlowParserMixin.jsxParseClosingElementAt (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6853:10)
+    at FlowParserMixin.jsxParseElementAt (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6868:37)
+    at FlowParserMixin.jsxParseElementAt (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6871:32)
+    at FlowParserMixin.jsxParseElement (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6922:17)
+    at FlowParserMixin.parseExprAtom (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6932:19)
+    at FlowParserMixin.parseExprSubscripts (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10758:23)
+    at FlowParserMixin.parseUpdate (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10743:21)
+    at FlowParserMixin.parseMaybeUnary (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10723:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10576:61)
+    at FlowParserMixin.parseExprOps (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10581:23)
+    at FlowParserMixin.parseMaybeConditional (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10558:23)
+    at FlowParserMixin.parseMaybeAssign (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10521:21)
+    at /Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:5722:39
+    at FlowParserMixin.tryParse (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:3665:20)
+    at FlowParserMixin.parseMaybeAssign (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:5722:18)
+    at /Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10491:39
+    at FlowParserMixin.allowInAnd (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12100:12)
+    at FlowParserMixin.parseMaybeAssignAllowIn (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10491:17)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:11359:28)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:5815:18)
+    at FlowParserMixin.parseExprAtom (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:11006:23)
+    at FlowParserMixin.parseExprAtom (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:6937:20)
+    at FlowParserMixin.parseExprSubscripts (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10758:23)
+    at FlowParserMixin.parseUpdate (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10743:21)
+    at FlowParserMixin.parseMaybeUnary (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10723:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10576:61)
+    at FlowParserMixin.parseExprOps (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10581:23)
+    at FlowParserMixin.parseMaybeConditional (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10558:23)
+    at FlowParserMixin.parseMaybeAssign (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10521:21)
+    at FlowParserMixin.parseMaybeAssign (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:5773:18)
+    at FlowParserMixin.parseExpressionBase (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10475:23)
+    at /Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10471:39
+    at FlowParserMixin.allowInAnd (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12095:16)
+    at FlowParserMixin.parseExpression (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:10471:17)
+    at FlowParserMixin.parseReturnStatement (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12786:28)
+    at FlowParserMixin.parseStatementContent (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12437:21)
+    at FlowParserMixin.parseStatementLike (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12406:17)
+    at FlowParserMixin.parseStatementLike (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:5140:24)
+    at FlowParserMixin.parseStatementListItem (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12386:17)
+    at FlowParserMixin.parseBlockOrModuleBlockBody (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12960:61)
+    at FlowParserMixin.parseBlockBody (/Users/sabeehsyed/Documents/Coding/Rad_transcription/frontend/node_modules/@babel/parser/lib/index.js:12953:10)
+
+ERROR in [eslint] 
+src/App.js
+  Line 584:18:  Parsing error: Unterminated JSX contents. (584:18)
+
+webpack compiled with 2 errors
+Compiling...
+Failed to compile.
+
+[eslint] 
+src/App.js
+  Line 405:40:  'stopRecording' is not defined            no-undef
+  Line 405:56:  'startRecording' is not defined           no-undef
+  Line 415:30:  'handleCopyTranscription' is not defined  no-undef
+  Line 426:30:  'handleSaveTranscription' is not defined  no-undef
+
+Search for the keywords to learn more about each error.
+WARNING in [eslint] 
+src/App.js
+  Line 32:8:   'TranscriptionDisplay' is defined but never used               no-unused-vars
+  Line 33:8:   'TemplateSelector' is defined but never used                   no-unused-vars
+  Line 36:10:  'checkAudioSupport' is defined but never used                  no-unused-vars
+  Line 95:18:  'isSpeechRecording' is assigned a value but never used         no-unused-vars
+  Line 142:9:  'handleStartRecording' is assigned a value but never used      no-unused-vars
+  Line 156:9:  'handleStopRecording' is assigned a value but never used       no-unused-vars
+  Line 162:9:  'handleClearTranscription' is assigned a value but never used  no-unused-vars
+  Line 231:9:  'handleSaveReport' is assigned a value but never used          no-unused-vars
+
+ERROR in [eslint] 
+src/App.js
+  Line 405:40:  'stopRecording' is not defined            no-undef
+  Line 405:56:  'startRecording' is not defined           no-undef
+  Line 415:30:  'handleCopyTranscription' is not defined  no-undef
+  Line 426:30:  'handleSaveTranscription' is not defined  no-undef
+
+Search for the keywords to learn more about each error.
+
+webpack compiled with 1 error and 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/App.js
+  Line 32:8:   'TranscriptionDisplay' is defined but never used               no-unused-vars
+  Line 33:8:   'TemplateSelector' is defined but never used                   no-unused-vars
+  Line 36:10:  'checkAudioSupport' is defined but never used                  no-unused-vars
+  Line 95:18:  'isSpeechRecording' is assigned a value but never used         no-unused-vars
+  Line 162:9:  'handleClearTranscription' is assigned a value but never used  no-unused-vars
+  Line 231:9:  'handleSaveReport' is assigned a value but never used          no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/App.js
+  Line 32:8:   'TranscriptionDisplay' is defined but never used               no-unused-vars
+  Line 33:8:   'TemplateSelector' is defined but never used                   no-unused-vars
+  Line 36:10:  'checkAudioSupport' is defined but never used                  no-unused-vars
+  Line 95:18:  'isSpeechRecording' is assigned a value but never used         no-unused-vars
+  Line 162:9:  'handleClearTranscription' is assigned a value but never used  no-unused-vars
+  Line 231:9:  'handleSaveReport' is assigned a value but never used          no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/App.js
+  Line 158:9:  'handleClearTranscription' is assigned a value but never used  no-unused-vars
+  Line 227:9:  'handleSaveReport' is assigned a value but never used          no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/App.js
+  Line 158:9:  'handleClearTranscription' is assigned a value but never used  no-unused-vars
+  Line 227:9:  'handleSaveReport' is assigned a value but never used          no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/App.js
+  Line 220:9:  'handleSaveReport' is assigned a value but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/App.js
+  Line 220:9:  'handleSaveReport' is assigned a value but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/App.js
+  Line 220:9:  'handleSaveReport' is assigned a value but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/App.js
+  Line 220:9:  'handleSaveReport' is assigned a value but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/App.js
+  Line 220:9:  'handleSaveReport' is assigned a value but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/App.js
+  Line 220:9:  'handleSaveReport' is assigned a value but never used  no-unused-vars
+
+webpack compiled with 1 warning

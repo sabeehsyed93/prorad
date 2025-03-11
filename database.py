@@ -11,12 +11,19 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Create database engine
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./radiology_reports.db")
+DATABASE_URL = os.getenv("DATABASE_URL")
+if not DATABASE_URL:
+    logger.warning("No DATABASE_URL found in environment, falling back to SQLite")
+    DATABASE_URL = "sqlite:///./radiology_reports.db"
+
 logger.info("Initializing database connection to: %s", DATABASE_URL.split("@")[0].split(":")[0])
 
 # Handle PostgreSQL database URLs
-if DATABASE_URL.startswith("postgres://"):
+if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    logger.info("Using PostgreSQL database")
+else:
+    logger.info("Using SQLite database")
 
 # Configure SQLAlchemy engine with connection pooling and retry settings
 engine = create_engine(
@@ -69,7 +76,12 @@ class Report(Base):
 
 # Create tables
 def create_tables():
-    Base.metadata.create_all(bind=engine)
+    try:
+        Base.metadata.create_all(bind=engine)
+        logger.info("Successfully created database tables")
+    except Exception as e:
+        logger.error(f"Error creating database tables: {e}")
+        raise
 
 # Get database session
 def get_db():

@@ -84,7 +84,11 @@ def init_db():
                 logger.warning("Database initialization attempt %d failed: %s. Retrying...", attempt + 1, str(e))
 
 # Try to initialize the database and templates
-init_db()
+create_tables()
+
+# Initialize templates
+with SessionLocal() as db:
+    init_templates(db)
 
 # Initialize default templates
 with SessionLocal() as db:

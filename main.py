@@ -83,8 +83,12 @@ def init_db():
             else:
                 logger.warning("Database initialization attempt %d failed: %s. Retrying...", attempt + 1, str(e))
 
-# Try to initialize the database
+# Try to initialize the database and templates
 init_db()
+
+# Initialize default templates
+with SessionLocal() as db:
+    init_templates(db)
 
 class ProcessTextRequest(BaseModel):
     text: str
@@ -94,8 +98,8 @@ class Template(BaseModel):
     name: str
     content: str
 
-# In-memory template storage (replace with database in production)
-templates = {
+# Default templates to add if none exist
+default_templates = {
     "chest_xray": """
     # Chest X-ray Report Template
     
@@ -152,6 +156,15 @@ templates = {
     [impression]
     """
 }
+
+# Initialize default templates in database
+def init_templates(db: Session):
+    for name, content in default_templates.items():
+        existing = db.query(database.Template).filter(database.Template.name == name).first()
+        if not existing:
+            template = database.Template(name=name, content=content)
+            db.add(template)
+    db.commit()
 
 # Routes
 @app.get("/health")

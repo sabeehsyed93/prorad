@@ -1,5 +1,23 @@
-from database import Base, engine, get_db, Template as DBTemplate
+import os
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from database import Base, Template as DBTemplate
 from main import default_templates
+
+# Get DATABASE_URL from environment
+DATABASE_URL = os.getenv("DATABASE_URL")
+if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+# Create engine
+engine = create_engine(DATABASE_URL if DATABASE_URL else "sqlite:///./radiology_reports.db")
+
+# Create session factory
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+# Get database session
+def get_db():
+    return SessionLocal()
 
 # Drop all tables
 Base.metadata.drop_all(bind=engine)
@@ -9,7 +27,7 @@ Base.metadata.create_all(bind=engine)
 
 # Initialize default templates
 def init_templates():
-    db = next(get_db())
+    db = get_db()
     try:
         # Check if templates already exist
         existing_templates = db.query(DBTemplate).all()

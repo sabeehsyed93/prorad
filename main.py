@@ -24,7 +24,7 @@ import reports
 # Load environment variables
 load_dotenv()
 
-# Initialize Gemini API
+# Initialize Gemini API (trigger redeploy)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 logger.info(f"Environment variables available: {[k for k in os.environ.keys()]}")
 logger.info(f"GEMINI_API_KEY present: {bool(GEMINI_API_KEY)}")

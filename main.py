@@ -83,14 +83,78 @@ def init_db():
             else:
                 logger.warning("Database initialization attempt %d failed: %s. Retrying...", attempt + 1, str(e))
 
+# Default templates to initialize
+default_templates = {
+    "chest_xray": """
+    # Chest X-ray Report Template
+    
+    ## Clinical Information
+    [clinical_information]
+    
+    ## Technique
+    [technique]
+    
+    ## Findings
+    [findings]
+    
+    ## Impression
+    [impression]
+    """,
+    "abdominal_ct": """
+    # Abdominal CT Report Template
+    
+    ## Clinical Information
+    [clinical_information]
+    
+    ## Technique
+    [technique]
+    
+    ## Findings
+    ### Liver
+    [liver_findings]
+    
+    ### Gallbladder and Biliary System
+    [gallbladder_findings]
+    
+    ### Pancreas
+    [pancreas_findings]
+    
+    ### Spleen
+    [spleen_findings]
+    
+    ### Adrenal Glands
+    [adrenal_findings]
+    
+    ### Kidneys and Ureters
+    [kidney_findings]
+    
+    ### GI Tract
+    [gi_findings]
+    
+    ### Vascular
+    [vascular_findings]
+    
+    ### Other Findings
+    [other_findings]
+    
+    ## Impression
+    [impression]
+    """
+}
+
+# Initialize templates in database
+def init_templates(db: Session):
+    for name, content in default_templates.items():
+        existing = db.query(DBTemplate).filter(DBTemplate.name == name).first()
+        if not existing:
+            template = DBTemplate(name=name, content=content)
+            db.add(template)
+    db.commit()
+
 # Try to initialize the database and templates
 create_tables()
 
 # Initialize templates
-with SessionLocal() as db:
-    init_templates(db)
-
-# Initialize default templates
 with SessionLocal() as db:
     init_templates(db)
 

@@ -52,6 +52,10 @@ origins = [
     "http://localhost:3000",  # Local development
     "https://radiant-fairy-eb4441.netlify.app",  # Production frontend
     "http://localhost:5173",  # Vite dev server
+    "http://prorad.co.uk",  # Custom domain
+    "https://prorad.co.uk",  # Custom domain (HTTPS)
+    "www.prorad.co.uk",  # Custom domain with www
+    "https://www.prorad.co.uk",  # Custom domain with www (HTTPS)
 ]
 
 app.add_middleware(

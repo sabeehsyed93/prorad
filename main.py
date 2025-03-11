@@ -363,32 +363,40 @@ Important: Write in a natural, flowing style as a radiologist would dictate. Avo
         pass
 
 @app.get("/templates")
-async def get_templates():
+async def get_templates(db: Session = Depends(get_db)):
     """Get all available templates"""
-    return {"templates": [{"name": k, "content": v} for k, v in templates.items()]}
+    templates = db.query(DBTemplate).all()
+    return {"templates": [{"name": t.name, "content": t.content} for t in templates]}
 
 @app.post("/templates")
-async def add_template(template: Template):
+async def add_template(template: Template, db: Session = Depends(get_db)):
     """Add a new template"""
-    if template.name in templates:
+    existing = db.query(DBTemplate).filter(DBTemplate.name == template.name).first()
+    if existing:
         raise HTTPException(status_code=400, detail="Template already exists")
-    templates[template.name] = template.content
+    db_template = DBTemplate(name=template.name, content=template.content)
+    db.add(db_template)
+    db.commit()
     return {"message": f"Template '{template.name}' added successfully"}
 
 @app.put("/templates/{template_name}")
-async def update_template(template_name: str, template: Template):
+async def update_template(template_name: str, template: Template, db: Session = Depends(get_db)):
     """Update an existing template"""
-    if template_name not in templates:
+    db_template = db.query(DBTemplate).filter(DBTemplate.name == template_name).first()
+    if not db_template:
         raise HTTPException(status_code=404, detail="Template not found")
-    templates[template_name] = template.content
+    db_template.content = template.content
+    db.commit()
     return {"message": f"Template '{template_name}' updated successfully"}
 
 @app.delete("/templates/{template_name}")
-async def delete_template(template_name: str):
+async def delete_template(template_name: str, db: Session = Depends(get_db)):
     """Delete a template"""
-    if template_name not in templates:
+    db_template = db.query(DBTemplate).filter(DBTemplate.name == template_name).first()
+    if not db_template:
         raise HTTPException(status_code=404, detail="Template not found")
-    del templates[template_name]
+    db.delete(db_template)
+    db.commit()
     return {"message": f"Template '{template_name}' deleted successfully"}
 
 @app.get("/recent-reports/")

@@ -19,9 +19,13 @@ if not DATABASE_URL:
 logger.info("Initializing database connection to: %s", DATABASE_URL.split("@")[0].split(":")[0])
 
 # Handle PostgreSQL database URLs
-if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
-    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
-    logger.info("Using PostgreSQL database")
+if DATABASE_URL:
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    if "postgresql" in DATABASE_URL:
+        logger.info("Using PostgreSQL database")
+    else:
+        logger.info("Using SQLite database")
 else:
     logger.info("Using SQLite database")
 

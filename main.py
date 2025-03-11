@@ -40,7 +40,12 @@ app.add_middleware(
 app.include_router(reports.router, tags=["reports"])
 
 # Initialize database tables
-create_tables()
+try:
+    create_tables()
+    logger.info("Database tables created successfully")
+except Exception as e:
+    logger.error(f"Error creating database tables: {str(e)}")
+    # Don't raise the error here, let the app start even if tables exist
 
 class ProcessTextRequest(BaseModel):
     text: str

@@ -4,14 +4,42 @@ from sqlalchemy.orm import sessionmaker, relationship
 from datetime import datetime
 import os
 
+import logging
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 # Create database engine
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./radiology_reports.db")
-
-# Handle PostgreSQL database URLs from Railway
-if DATABASE_URL.startswith("postgres://"):
-    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
-
-engine = create_engine(DATABASE_URL, pool_size=5, max_overflow=0)
+try:
+    DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./radiology_reports.db")
+    logger.info(f"Initializing database connection...")
+    
+    # Handle PostgreSQL database URLs
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    
+    # Configure SQLAlchemy engine with connection pooling and retry settings
+    engine = create_engine(
+        DATABASE_URL,
+        pool_size=5,
+        max_overflow=0,
+        pool_timeout=30,
+        pool_recycle=1800,  # Recycle connections after 30 minutes
+        pool_pre_ping=True,  # Enable connection health checks
+        connect_args={
+            "connect_timeout": 10  # Connection timeout in seconds
+        }
+    )
+    
+    # Test the connection
+    with engine.connect() as conn:
+        conn.execute("SELECT 1")
+        logger.info("Database connection successful")
+        
+except Exception as e:
+    logger.error(f"Database connection error: {str(e)}")
+    raise
 
 # Create session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

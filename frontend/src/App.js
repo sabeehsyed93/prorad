@@ -232,7 +232,7 @@ function App() {
 
   const fetchTemplates = async () => {
     try {
-      const response = await fetch('/templates');
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/templates`);
       const data = await response.json();
       if (data.templates) {
         setTemplates(data.templates);
@@ -311,7 +311,7 @@ function App() {
     setIsProcessing(true);
     
     try {
-      const response = await fetch('/process', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/process`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

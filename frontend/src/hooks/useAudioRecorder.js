@@ -12,8 +12,6 @@ const useAudioRecorder = (deviceId = null) => {
   const [error, setError] = useState(null);
   const recognitionRef = useRef(null);
 
-  // No MIME type or visualization needed for Web Speech API
-
   // Initialize speech recognition
   useEffect(() => {
     if ('webkitSpeechRecognition' in window) {
@@ -43,7 +41,6 @@ const useAudioRecorder = (deviceId = null) => {
 
       recognition.onresult = (event) => {
         let finalTranscript = '';
-        let interimTranscript = '';
 
         // Punctuation conversion map
         const punctuationMap = {
@@ -71,8 +68,6 @@ const useAudioRecorder = (deviceId = null) => {
             }
             transcript = transcript.trim();
             finalTranscript += transcript;
-          } else {
-            interimTranscript += transcript;
           }
         }
 
@@ -136,7 +131,7 @@ const useAudioRecorder = (deviceId = null) => {
         recognitionRef.current.stop();
       }
     };
-  }, []);
+  }, [deviceId]);
 
   // Start recording and transcription
   const startRecording = useCallback(async (cursorPosition = null, initialText = '') => {
@@ -154,7 +149,6 @@ const useAudioRecorder = (deviceId = null) => {
       // Store initial cursor position and reset first transcript flag
       initialPositionRef.current = cursorPosition !== null ? cursorPosition : initialText.length;
       isFirstTranscriptRef.current = true;
-      console.log('Starting recording with cursor at:', initialPositionRef.current);
       
       // Start recognition
       recognitionRef.current.start();
@@ -171,15 +165,6 @@ const useAudioRecorder = (deviceId = null) => {
     
     recognitionRef.current.stop();
   }, [isRecording]);
-
-  // Clean up on unmount
-  useEffect(() => {
-    return () => {
-      if (recognitionRef.current) {
-        recognitionRef.current.stop();
-      }
-    };
-  }, []);
 
   return {
     isRecording,

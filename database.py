@@ -44,17 +44,6 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 # Define models
-class User(Base):
-    __tablename__ = "users"
-
-    id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True, index=True)
-    email = Column(String, unique=True, index=True)
-    hashed_password = Column(String)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    
-    reports = relationship("Report", back_populates="user")
-
 class Template(Base):
     __tablename__ = "templates"
 
@@ -74,9 +63,6 @@ class Report(Base):
     template_name = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
-    
-    user = relationship("User", back_populates="reports", passive_deletes=True)
 
 # Create tables
 def create_tables():

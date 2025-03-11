@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 # Create database engine
 try:
     DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./radiology_reports.db")
-    logger.info(f"Initializing database connection...")
+    logger.info("Initializing database connection to: %s", DATABASE_URL.split("@")[0].split(":")[0])
     
     # Handle PostgreSQL database URLs
     if DATABASE_URL.startswith("postgres://"):

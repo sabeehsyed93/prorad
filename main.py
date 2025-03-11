@@ -1,5 +1,6 @@
 import os
 import json
+import logging
 from typing import Optional
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,6 +9,13 @@ from pydantic import BaseModel
 import google.generativeai as genai
 from dotenv import load_dotenv
 from sqlalchemy.orm import Session
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 # Import database and reports modules
 from database import create_tables, get_db
@@ -124,7 +132,8 @@ async def process_text(request: ProcessTextRequest, db: Session = Depends(get_db
     """Process transcribed text with Gemini API and save to database"""
     try:
         if not GEMINI_API_KEY:
-            return {"error": "Gemini API key not configured"}
+            logger.error("Gemini API key not configured")
+            raise HTTPException(status_code=500, detail="Gemini API key not configured")
         
         # Preprocess the transcribed text
         text = request.text

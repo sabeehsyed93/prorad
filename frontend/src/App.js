@@ -39,6 +39,7 @@ import { downloadTextAsFile, generateDefaultFilename } from './utils/fileUtils';
 import useAudioRecorder from './hooks/useAudioRecorder';
 import useAudioDevices from './hooks/useAudioDevices';
 import { saveTranscription, getTranscriptionHistory, deleteTranscription, clearTranscriptionHistory } from './utils/transcriptionUtils';
+import { getApiEndpoint } from './utils/apiConfig';
 import TranscriptionHistory from './components/TranscriptionHistory';
 
 // Create a dark theme

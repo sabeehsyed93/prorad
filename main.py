@@ -25,12 +25,15 @@ import reports
 load_dotenv()
 
 # Initialize Gemini API
-# Initialize Gemini API
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+logger.info(f"Environment variables available: {[k for k in os.environ.keys()]}")
+logger.info(f"GEMINI_API_KEY present: {bool(GEMINI_API_KEY)}")
+
 if GEMINI_API_KEY:
+    logger.info("Configuring Gemini API with provided key")
     genai.configure(api_key=GEMINI_API_KEY)
 else:
-    print("Warning: GEMINI_API_KEY not found in environment variables")
+    logger.error("GEMINI_API_KEY not found in environment variables")
 
 # Initialize FastAPI app
 app = FastAPI(title="Radiology Transcription API")
@@ -150,9 +153,11 @@ async def root():
 async def process_text(request: ProcessTextRequest, db: Session = Depends(get_db)):
     """Process transcribed text with Gemini API and save to database"""
     try:
+        logger.info(f"Processing text request. API Key present: {bool(GEMINI_API_KEY)}")
         if not GEMINI_API_KEY:
             logger.error("Gemini API key not configured")
             raise HTTPException(status_code=500, detail="Gemini API key not configured")
+        logger.info("API key validation passed, proceeding with request")
         
         # Preprocess the transcribed text
         text = request.text

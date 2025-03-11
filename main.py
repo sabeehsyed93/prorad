@@ -165,6 +165,9 @@ class ProcessTextRequest(BaseModel):
 class Template(BaseModel):
     name: str
     content: str
+    
+    class Config:
+        from_attributes = True
 
 # Default templates to add if none exist
 default_templates = {
@@ -364,13 +367,13 @@ Important: Write in a natural, flowing style as a radiologist would dictate. Avo
         # Clean up any resources if needed
         pass
 
-@app.get("/templates")
+@app.get("/templates", response_model=list[Template])
 async def get_templates(db: Session = Depends(get_db)):
     """Get all available templates"""
     templates = db.query(DBTemplate).all()
-    return {"templates": [{"name": t.name, "content": t.content} for t in templates]}
+    return [Template(name=t.name, content=t.content) for t in templates]
 
-@app.post("/templates")
+@app.post("/templates", response_model=Template)
 async def add_template(template: Template, db: Session = Depends(get_db)):
     """Add a new template"""
     existing = db.query(DBTemplate).filter(DBTemplate.name == template.name).first()
@@ -379,7 +382,8 @@ async def add_template(template: Template, db: Session = Depends(get_db)):
     db_template = DBTemplate(name=template.name, content=template.content)
     db.add(db_template)
     db.commit()
-    return {"message": f"Template '{template.name}' added successfully"}
+    db.refresh(db_template)
+    return Template(name=db_template.name, content=db_template.content)
 
 @app.put("/templates/{template_name}")
 async def update_template(template_name: str, template: Template, db: Session = Depends(get_db)):

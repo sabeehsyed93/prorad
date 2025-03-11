@@ -24,13 +24,22 @@ import reports
 # Load environment variables
 load_dotenv()
 
-# Initialize Gemini API (trigger redeploy)
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-logger.info(f"Environment variables available: {[k for k in os.environ.keys()]}")
-logger.info(f"GEMINI_API_KEY present: {bool(GEMINI_API_KEY)}")
+# Initialize Gemini API (debug mode)
+logger.info("Starting API key configuration...")
+logger.info(f"Current working directory: {os.getcwd()}")
+logger.info(f"All environment variables: {dict(os.environ)}")
+
+# Try multiple ways to get the API key
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")  # Try standard way
+if not GEMINI_API_KEY:
+    logger.info("Trying alternate methods to get API key...")
+    GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")  # Try direct dictionary access
+
+logger.info(f"Final GEMINI_API_KEY status - exists: {bool(GEMINI_API_KEY)}, length: {len(GEMINI_API_KEY) if GEMINI_API_KEY else 0}")
 
 if GEMINI_API_KEY:
     logger.info("Configuring Gemini API with provided key")
+    logger.info(f"Key starts with: {GEMINI_API_KEY[:4]}...")
     genai.configure(api_key=GEMINI_API_KEY)
 else:
     logger.error("GEMINI_API_KEY not found in environment variables")

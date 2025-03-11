@@ -29,16 +29,11 @@ class ReportResponse(ReportBase):
 # CRUD operations
 @router.post("/reports/", response_model=ReportResponse)
 def create_report(report: ReportCreate, db: Session = Depends(get_db)):
-    # For now, we're not handling authentication, so we'll use a default user_id
-    # In a real application, you would get the user_id from the authenticated user
-    default_user_id = 1
-    
     db_report = Report(
         title=report.title,
         raw_transcription=report.raw_transcription,
         processed_text=report.processed_text,
-        template_name=report.template_name,
-        user_id=default_user_id
+        template_name=report.template_name
     )
     
     db.add(db_report)

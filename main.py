@@ -18,7 +18,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Import database and reports modules
-from database import create_tables, get_db, SessionLocal, Template as DBTemplate
+from database import create_tables, get_db, SessionLocal, Template as DBTemplate, Report
 import reports
 
 # Load environment variables
@@ -338,8 +338,8 @@ Important: Write in a natural, flowing style as a radiologist would dictate. Avo
         if len(title) > 50:  # Limit title length
             title = title[:47] + "..."
         
-        # Create a new report
-        new_report = reports.ReportCreate(
+        # Create a new report directly
+        db_report = Report(
             title=title,
             raw_transcription=text,
             processed_text=processed_text,
@@ -347,7 +347,9 @@ Important: Write in a natural, flowing style as a radiologist would dictate. Avo
         )
         
         # Save to database
-        db_report = reports.create_report(new_report, db)
+        db.add(db_report)
+        db.commit()
+        db.refresh(db_report)
         
         return {
             "processed_text": processed_text,

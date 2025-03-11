@@ -74,9 +74,9 @@ class Report(Base):
     template_name = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    user_id = Column(Integer, ForeignKey("users.id"))
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     
-    user = relationship("User", back_populates="reports")
+    user = relationship("User", back_populates="reports", passive_deletes=True)
 
 # Create tables
 def create_tables():

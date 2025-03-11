@@ -171,27 +171,26 @@ async def process_text(request: ProcessTextRequest, db: Session = Depends(get_db
             template_content = templates[request.template_name]
         
         # Prepare prompt for Gemini
-        prompt = f"""
-        You are an expert radiologist writing a radiology report. Convert the following transcribed speech into a professional report.
+        template_instruction = f"\nUse the following template structure:\n{template_content}" if template_content else ""
+        
+        prompt = f"""You are an expert radiologist writing a radiology report. Convert the following transcribed speech into a professional report.
 
-        Instructions:
-        1. Remove speech artifacts (um, uh, pauses, repetitions)
-        2. Write in clear, natural prose paragraphs without bullet points or section headers
-        3. Use standard medical terminology
-        4. Be concise and clear
-        5. If something is not mentioned, simply state it as normal (e.g., "Normal bones" instead of "Bones not mentioned, assume normal")
-        6. Use precise measurements if provided
-        7. Highlight any critical findings
-        8. End with a brief impression
-        9. Start directly with the findings - do not include any introductory text like "Here's a report..."
+Instructions:
+1. Remove speech artifacts (um, uh, pauses, repetitions)
+2. Write in clear, natural prose paragraphs without bullet points or section headers
+3. Use standard medical terminology
+4. Be concise and clear
+5. If something is not mentioned, simply state it as normal (e.g., "Normal bones" instead of "Bones not mentioned, assume normal")
+6. Use precise measurements if provided
+7. Highlight any critical findings
+8. End with a brief impression
+9. Start directly with the findings - do not include any introductory text like "Here's a report..."
 
-        Transcribed speech:
-        {text}
+Transcribed speech:
+{text}{template_instruction}
 
-        {"Use the following template structure:\n" + template_content if template_content else ""}
+Important: Write in a natural, flowing style as a radiologist would dictate. Avoid breaking the report into many sections."""
 
-        Important: Write in a natural, flowing style as a radiologist would dictate. Avoid breaking the report into many sections.
-        """
         
         try:
             # Call Gemini API
@@ -203,13 +202,16 @@ async def process_text(request: ProcessTextRequest, db: Session = Depends(get_db
             })
             
             if not response or not hasattr(response, 'text'):
-                print(f"Unexpected Gemini API response: {response}")
-                return {"error": "Invalid response from Gemini API"}
+                error_msg = f"Unexpected Gemini API response: {response}"
+                logger.error(error_msg)
+                raise HTTPException(status_code=500, detail=error_msg)
                 
             processed_text = response.text
+            logger.info("Successfully processed text with Gemini API")
         except Exception as e:
-            print(f"Gemini API error: {str(e)}")
-            return {"error": f"Error calling Gemini API: {str(e)}"}
+            error_msg = f"Error calling Gemini API: {str(e)}"
+            logger.error(error_msg)
+            raise HTTPException(status_code=500, detail=error_msg)
         
         # Save the report to the database
         # Generate a title from the first line of the processed text or use a default

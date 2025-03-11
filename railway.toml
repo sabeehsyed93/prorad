@@ -1,10 +1,6 @@
 [build]
-python = "3.11.7"
 builder = "python"
 
 [deploy]
-startCommand = "cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT"
+startCommand = "uvicorn main:app --host 0.0.0.0 --port $PORT"
 healthcheckPath = "/"
-
-[phases.setup]
-cmds = ["cd backend", "pip install -r requirements.txt"]

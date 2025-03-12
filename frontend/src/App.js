@@ -232,11 +232,9 @@ function App() {
 
   const fetchTemplates = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/templates`);
+      const response = await fetch(getApiEndpoint('templates'));
       const data = await response.json();
-      if (data.templates) {
-        setTemplates(data.templates);
-      }
+      setTemplates(data);
     } catch (error) {
       console.error('Error fetching templates:', error);
       showNotification('Failed to fetch templates', 'error');
@@ -311,7 +309,7 @@ function App() {
     setIsProcessing(true);
     
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/process`, {
+      const response = await fetch(getApiEndpoint('process'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -407,7 +405,7 @@ function App() {
 
   const handleAddTemplate = async (template) => {
     try {
-      const response = await fetch('/templates', {
+      const response = await fetch(getApiEndpoint('templates'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -429,7 +427,7 @@ function App() {
 
   const handleEditTemplate = async (template) => {
     try {
-      const response = await fetch(`/templates/${template.name}`, {
+      const response = await fetch(getApiEndpoint(`templates/${template.name}`), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -451,7 +449,7 @@ function App() {
 
   const handleDeleteTemplate = async (templateName) => {
     try {
-      const response = await fetch(`/templates/${templateName}`, {
+      const response = await fetch(getApiEndpoint(`templates/${templateName}`), {
         method: 'DELETE',
       });
       

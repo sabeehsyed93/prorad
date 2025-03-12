@@ -288,8 +288,11 @@ async def process_text(request: ProcessTextRequest, db: Session = Depends(get_db
         print("Final text:", text)
         
         template_content = ""
-        if request.template_name and request.template_name in templates:
-            template_content = templates[request.template_name]
+        if request.template_name:
+            # Get template from database
+            db_template = db.query(DBTemplate).filter(DBTemplate.name == request.template_name).first()
+            if db_template:
+                template_content = db_template.content
         
         # Prepare prompt for Gemini
         template_instruction = f"\nUse the following template structure:\n{template_content}" if template_content else ""

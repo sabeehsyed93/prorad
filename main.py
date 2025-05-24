@@ -317,8 +317,14 @@ Important: Write in a natural, flowing style as a radiologist would dictate. Avo
 
         
         try:
-            # Call Gemini API
-            model = genai.GenerativeModel('models/gemini-2.0-pro-exp')
+            # Call Gemini API with the correct model name
+            # Using the stable Gemini 1.5 Pro model which is recommended for production use
+            model = genai.GenerativeModel('models/gemini-1.5-pro')
+            
+            # Small delay to avoid hitting rate limits
+            import time
+            time.sleep(0.2)  # 200ms delay
+            
             response = model.generate_content(prompt, generation_config={
                 'temperature': 0.1,
                 'top_p': 0.8,

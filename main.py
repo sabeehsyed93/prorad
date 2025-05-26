@@ -62,7 +62,14 @@ else:
     logger.error("No API key found in any of the expected environment variables")
 
 # Initialize FastAPI app
-app = FastAPI(title="Radiology Transcription API")
+app = FastAPI(
+    title="Radiology Transcription API",
+    description="API for converting transcribed speech to professional radiology reports using Claude AI",
+    version="1.0.0",
+    docs_url="/docs",
+    redoc_url="/redoc",
+    openapi_url="/openapi.json"
+)
 
 # Add CORS middleware
 origins = [
@@ -276,11 +283,44 @@ def init_templates(db: Session):
 # Routes
 @app.get("/health")
 async def health_check():
+    # More comprehensive health check that doesn't require database
+    health_status = {
+        "status": "ok",
+        "api_status": "ok",
+        "claude_api_key_present": bool(CLAUDE_API_KEY),
+        "timestamp": datetime.utcnow().isoformat(),
+        "version": "1.0.0"
+    }
+    
+    # Check database connection but don't fail if it's down
+    try:
+        with engine.connect() as conn:
+            # Just test the connection
+            health_status["database_status"] = "ok"
+    except Exception as e:
+        health_status["database_status"] = "error"
+        health_status["database_error"] = str(e)[:100]  # Truncate long error messages
+    
+    return health_status
+
+# Special endpoint for Railway health checks
+# Railway expects a 200 OK response from this endpoint
+@app.get("/_health")
+async def railway_health_check():
+    # This endpoint always returns 200 OK with minimal processing
+    # Railway uses this to determine if the service is healthy
     return {"status": "ok"}
 
 @app.get("/")
 async def root():
-    return {"message": "Radiology Transcription API is running"}
+    # Simple status message that doesn't depend on any external services
+    return {
+        "message": "Radiology Transcription API is running",
+        "status": "online",
+        "api_ready": True,
+        "documentation": "/docs",  # Link to the auto-generated Swagger docs
+        "health_check": "/health"  # Link to the health check endpoint
+    }
 
 @app.post("/process")
 async def process_text(request: ProcessTextRequest, db: Session = Depends(get_db)):

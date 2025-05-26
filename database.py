@@ -16,12 +16,19 @@ if not DATABASE_URL:
     logger.warning("No DATABASE_URL found in environment, falling back to SQLite")
     DATABASE_URL = "sqlite:///./radiology_reports.db"
 
-logger.info("Initializing database connection to: %s", DATABASE_URL.split("@")[0].split(":")[0])
+# Log database type without exposing credentials
+try:
+    db_type = DATABASE_URL.split(":")[0]
+    logger.info(f"Initializing database connection to: {db_type}")
+except Exception as e:
+    logger.warning(f"Could not parse DATABASE_URL: {str(e)}")
 
 # Handle PostgreSQL database URLs
 if DATABASE_URL:
     if DATABASE_URL.startswith("postgres://"):
+        logger.info("Converting postgres:// URL to postgresql:// format")
         DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    
     if "postgresql" in DATABASE_URL:
         logger.info("Using PostgreSQL database")
     else:
@@ -67,11 +74,22 @@ class Report(Base):
 # Create tables
 def create_tables():
     try:
+        # Test the database connection first
+        with engine.connect() as conn:
+            logger.info("Database connection test successful")
+        
+        # Create tables
         Base.metadata.create_all(bind=engine)
         logger.info("Successfully created database tables")
     except Exception as e:
-        logger.error(f"Error creating database tables: {e}")
-        raise
+        logger.error(f"Error creating database tables: {str(e)}")
+        
+        # Don't crash the application in production, just log the error
+        if os.getenv("ENVIRONMENT") == "production" or os.getenv("RAILWAY_ENVIRONMENT"):
+            logger.warning("Running in production environment, continuing despite database error")
+        else:
+            # In development, raise the error for debugging
+            raise
 
 # Get database session
 def get_db():

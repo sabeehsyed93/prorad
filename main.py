@@ -166,14 +166,33 @@ def init_templates(db: Session):
         if not existing:
             template = DBTemplate(name=name, content=content)
             db.add(template)
-    db.commit()
+    try:
+        db.commit()
+    except Exception as e:
+        logger.warning(f"Error committing templates to database: {str(e)}")
+        logger.warning("Continuing without initializing templates")
 
 # Try to initialize the database and templates
-create_tables()
-
-# Initialize templates
-with SessionLocal() as db:
-    init_templates(db)
+try:
+    # First try to create tables
+    try:
+        create_tables()
+        logger.info("Database tables created successfully")
+    except Exception as e:
+        logger.error(f"Failed to create database tables: {str(e)}")
+        logger.warning("Application will continue but database functionality may be limited")
+    
+    # Then try to initialize templates
+    try:
+        with SessionLocal() as db:
+            init_templates(db)
+            logger.info("Successfully initialized default templates")
+    except Exception as e:
+        logger.warning(f"Error initializing default templates: {str(e)}")
+        logger.warning("Continuing without initializing templates")
+except Exception as e:
+    logger.error(f"Critical database initialization error: {str(e)}")
+    logger.warning("Application will start with limited functionality")
 
 class ProcessTextRequest(BaseModel):
     text: str
@@ -378,22 +397,31 @@ Please write in a natural, flowing style as a radiologist would dictate. Avoid b
         if len(title) > 50:  # Limit title length
             title = title[:47] + "..."
         
-        # Create a new report directly
-        db_report = Report(
-            title=title,
-            raw_transcription=text,
-            processed_text=processed_text,
-            template_name=request.template_name
-        )
+        report_id = None
         
-        # Save to database
-        db.add(db_report)
-        db.commit()
-        db.refresh(db_report)
+        # Try to save to database, but continue even if it fails
+        try:
+            # Create a new report
+            db_report = Report(
+                title=title,
+                raw_transcription=text,
+                processed_text=processed_text,
+                template_name=request.template_name
+            )
+            
+            # Save to database
+            db.add(db_report)
+            db.commit()
+            db.refresh(db_report)
+            report_id = db_report.id
+            logger.info(f"Successfully saved report to database with ID: {report_id}")
+        except Exception as e:
+            logger.error(f"Failed to save report to database: {str(e)}")
+            logger.warning("Continuing without saving to database")
         
         return {
             "processed_text": processed_text,
-            "report_id": db_report.id
+            "report_id": report_id
         }
     
     except Exception as e:

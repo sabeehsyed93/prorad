@@ -311,6 +311,18 @@ async def railway_health_check():
     # Railway uses this to determine if the service is healthy
     return {"status": "ok"}
 
+# Alternative health check path that Railway might use
+@app.get("/healthz")
+async def railway_health_check_alt():
+    # Alternative health check endpoint
+    return {"status": "ok"}
+
+# Another alternative health check path
+@app.head("/_health")
+async def railway_health_check_head():
+    # Support HEAD requests for health checks
+    return {"status": "ok"}
+
 @app.get("/")
 async def root():
     # Simple status message that doesn't depend on any external services

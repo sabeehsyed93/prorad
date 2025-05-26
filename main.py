@@ -6,7 +6,7 @@ from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-import google.generativeai as genai
+import anthropic
 from dotenv import load_dotenv
 from sqlalchemy.orm import Session
 
@@ -24,25 +24,42 @@ import reports
 # Load environment variables
 load_dotenv()
 
-# Initialize Gemini API (debug mode)
+# Initialize Claude API (debug mode)
 logger.info("Starting API key configuration...")
 logger.info(f"Current working directory: {os.getcwd()}")
-logger.info(f"All environment variables: {dict(os.environ)}")
+
+# List environment variable keys for debugging (without showing values for security)
+env_var_keys = list(os.environ.keys())
+logger.info(f"Available environment variable keys: {env_var_keys}")
 
 # Try multiple ways to get the API key
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")  # Try standard way
-if not GEMINI_API_KEY:
-    logger.info("Trying alternate methods to get API key...")
-    GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")  # Try direct dictionary access
+CLAUDE_API_KEY = ""
 
-logger.info(f"Final GEMINI_API_KEY status - exists: {bool(GEMINI_API_KEY)}, length: {len(GEMINI_API_KEY) if GEMINI_API_KEY else 0}")
+# Check for various possible environment variable names
+possible_env_vars = [
+    "ANTHROPIC_API_KEY",  # Primary key name
+    "CLAUDE_API_KEY",     # Alternative key name
+    "GEMINI_API_KEY"      # Fallback to the old key name
+]
 
-if GEMINI_API_KEY:
-    logger.info("Configuring Gemini API with provided key")
-    logger.info(f"Key starts with: {GEMINI_API_KEY[:4]}...")
-    genai.configure(api_key=GEMINI_API_KEY)
+# Try each possible environment variable
+for var_name in possible_env_vars:
+    api_key = os.getenv(var_name, "")
+    if api_key:
+        CLAUDE_API_KEY = api_key
+        logger.info(f"Found API key in environment variable: {var_name}")
+        break
+
+logger.info(f"Final API key status - exists: {bool(CLAUDE_API_KEY)}, length: {len(CLAUDE_API_KEY) if CLAUDE_API_KEY else 0}")
+
+# Initialize Claude client
+if CLAUDE_API_KEY:
+    logger.info("Configuring Claude API with provided key")
+    if len(CLAUDE_API_KEY) >= 4:
+        logger.info(f"Key starts with: {CLAUDE_API_KEY[:4]}...")
+    claude_client = anthropic.Anthropic(api_key=CLAUDE_API_KEY)
 else:
-    logger.error("GEMINI_API_KEY not found in environment variables")
+    logger.error("No API key found in any of the expected environment variables")
 
 # Initialize FastAPI app
 app = FastAPI(title="Radiology Transcription API")
@@ -248,12 +265,12 @@ async def root():
 
 @app.post("/process")
 async def process_text(request: ProcessTextRequest, db: Session = Depends(get_db)):
-    """Process transcribed text with Gemini API and save to database"""
+    """Process transcribed text with Claude API and save to database"""
     try:
-        logger.info(f"Processing text request. API Key present: {bool(GEMINI_API_KEY)}")
-        if not GEMINI_API_KEY:
-            logger.error("Gemini API key not configured")
-            raise HTTPException(status_code=500, detail="Gemini API key not configured")
+        logger.info(f"Processing text request. API Key present: {bool(CLAUDE_API_KEY)}")
+        if not CLAUDE_API_KEY:
+            logger.error("Claude API key not configured")
+            raise HTTPException(status_code=500, detail="Claude API key not configured")
         logger.info("API key validation passed, proceeding with request")
         
         # Preprocess the transcribed text
@@ -294,52 +311,63 @@ async def process_text(request: ProcessTextRequest, db: Session = Depends(get_db
             if db_template:
                 template_content = db_template.content
         
-        # Prepare prompt for Gemini
+        # Prepare template instruction if template exists
         template_instruction = f"\nUse the following template structure:\n{template_content}" if template_content else ""
         
-        prompt = f"""You are an expert radiologist writing a radiology report. Convert the following transcribed speech into a professional report.
+        # Create system prompt for Claude
+        system_prompt = """You are an expert radiologist writing a radiology report. Convert transcribed speech into a professional report.
+        Follow these guidelines:
+        - Remove speech artifacts (um, uh, pauses, repetitions)
+        - Write in clear, natural prose paragraphs
+        - Use standard medical terminology
+        - Be concise and clear
+        - If something is not mentioned, state it as normal
+        - Use precise measurements if provided
+        - Highlight any critical findings
+        - End with a brief impression
+        - Start directly with the findings"""
+        
+        # Create user prompt with the transcribed text
+        user_prompt = f"""Here is the transcribed speech to convert into a professional radiology report:
 
-Instructions:
-1. Remove speech artifacts (um, uh, pauses, repetitions)
-2. Write in clear, natural prose paragraphs without bullet points or section headers
-3. Use standard medical terminology
-4. Be concise and clear
-5. If something is not mentioned, simply state it as normal (e.g., "Normal bones" instead of "Bones not mentioned, assume normal")
-6. Use precise measurements if provided
-7. Highlight any critical findings
-8. End with a brief impression
-9. Start directly with the findings - do not include any introductory text like "Here's a report..."
-
-Transcribed speech:
 {text}{template_instruction}
 
-Important: Write in a natural, flowing style as a radiologist would dictate. Avoid breaking the report into many sections."""
-
+Please write in a natural, flowing style as a radiologist would dictate. Avoid breaking the report into many sections."""
         
         try:
-            # Call Gemini API with the correct model name
-            # Using the stable Gemini 1.5 Pro model which is recommended for production use
-            model = genai.GenerativeModel('models/gemini-1.5-pro')
+            # Call Claude API
+            logger.info("Calling Claude API with prompt")
             
-            # Small delay to avoid hitting rate limits
+            # Add a small delay to avoid rate limits
             import time
             time.sleep(0.2)  # 200ms delay
             
-            response = model.generate_content(prompt, generation_config={
-                'temperature': 0.1,
-                'top_p': 0.8,
-                'top_k': 40
-            })
+            # Create a message using Claude's Messages API
+            response = claude_client.messages.create(
+                model="claude-sonnet-4-20250514",  # Using Claude Sonnet 4
+                max_tokens=1024,
+                temperature=0.1,
+                system=system_prompt,
+                messages=[
+                    {"role": "user", "content": user_prompt}
+                ]
+            )
             
-            if not response or not hasattr(response, 'text'):
-                error_msg = f"Unexpected Gemini API response: {response}"
+            # Extract the response text
+            if not response or not hasattr(response, 'content') or not response.content:
+                error_msg = f"Unexpected Claude API response: {response}"
                 logger.error(error_msg)
                 raise HTTPException(status_code=500, detail=error_msg)
-                
-            processed_text = response.text
-            logger.info("Successfully processed text with Gemini API")
+            
+            # Extract text from the response content
+            processed_text = ""
+            for content_block in response.content:
+                if hasattr(content_block, 'text'):
+                    processed_text += content_block.text
+            
+            logger.info("Successfully processed text with Claude API")
         except Exception as e:
-            error_msg = f"Error calling Gemini API: {str(e)}"
+            error_msg = f"Error calling Claude API: {str(e)}"
             logger.error(error_msg)
             raise HTTPException(status_code=500, detail=error_msg)
         

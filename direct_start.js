@@ -44,14 +44,22 @@ function startFastAPI() {
   }
   
   // Direct Python command to start uvicorn with hardcoded port
-  const pythonCode = `
+  const pythonCode = `#!/usr/bin/env python3
 import sys
+import os
 print("Python version:", sys.version)
 print("Python path:", sys.executable)
+print("Current directory:", os.getcwd())
 print("Starting uvicorn directly...")
 
-import uvicorn
-uvicorn.run("main:app", host="0.0.0.0", port=8000)
+try:
+    import uvicorn
+    print("Uvicorn imported successfully")
+    print("Starting uvicorn with host=0.0.0.0, port=8000")
+    uvicorn.run("main:app", host="0.0.0.0", port=8000)
+except Exception as e:
+    print(f"Error starting uvicorn: {e}")
+    sys.exit(1)
   `;
   
   // Write the Python code to a file

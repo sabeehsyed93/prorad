@@ -41,10 +41,15 @@ RUN /app/venv/bin/uvicorn --version && \
 # Copy application code
 COPY . .
 
-# Create a simple startup script that uses our direct_start.js
+# Ensure our Python startup scripts are executable
+COPY start_uvicorn.py /app/start_uvicorn.py
+RUN chmod +x /app/start_uvicorn.py
+
+# Create a simple startup script that runs both Node.js and direct Python as fallback
 RUN echo '#!/bin/bash' > /app/start.sh && \
+    echo 'set -e' >> /app/start.sh && \
     echo '' >> /app/start.sh && \
-    echo 'echo "Starting application with direct_start.js..."' >> /app/start.sh && \
+    echo 'echo "Starting application..."' >> /app/start.sh && \
     echo '' >> /app/start.sh && \
     echo '# Print environment variables for debugging' >> /app/start.sh && \
     echo 'echo "Environment variables:"' >> /app/start.sh && \
@@ -55,18 +60,26 @@ RUN echo '#!/bin/bash' > /app/start.sh && \
     echo '  echo "Activating Python virtual environment"' >> /app/start.sh && \
     echo '  export PATH="/app/venv/bin:$PATH"' >> /app/start.sh && \
     echo '  export VIRTUAL_ENV="/app/venv"' >> /app/start.sh && \
-    echo '  echo "Python version: $(/app/venv/bin/python --version)"' >> /app/start.sh && \
+    echo '  PYTHON_CMD="/app/venv/bin/python"' >> /app/start.sh && \
+    echo '  echo "Python version: $($PYTHON_CMD --version)"' >> /app/start.sh && \
     echo 'else' >> /app/start.sh && \
     echo '  echo "Virtual environment not found, using system Python"' >> /app/start.sh && \
-    echo '  echo "Python version: $(python3 --version)"' >> /app/start.sh && \
+    echo '  PYTHON_CMD="python3"' >> /app/start.sh && \
+    echo '  echo "Python version: $($PYTHON_CMD --version)"' >> /app/start.sh && \
     echo 'fi' >> /app/start.sh && \
     echo '' >> /app/start.sh && \
-    echo '# Make direct_start.js executable' >> /app/start.sh && \
+    echo '# Make scripts executable' >> /app/start.sh && \
     echo 'chmod +x /app/direct_start.js' >> /app/start.sh && \
+    echo 'chmod +x /app/start_uvicorn.py' >> /app/start.sh && \
     echo '' >> /app/start.sh && \
-    echo '# Start the application using our direct starter script' >> /app/start.sh && \
-    echo 'echo "Starting direct_start.js..."' >> /app/start.sh && \
-    echo 'exec node /app/direct_start.js' >> /app/start.sh && \
+    echo '# Start the Express server in the background' >> /app/start.sh && \
+    echo 'echo "Starting Express server on port 3000..."' >> /app/start.sh && \
+    echo 'node server.js &' >> /app/start.sh && \
+    echo 'EXPRESS_PID=$!' >> /app/start.sh && \
+    echo '' >> /app/start.sh && \
+    echo '# Start uvicorn directly with Python' >> /app/start.sh && \
+    echo 'echo "Starting uvicorn directly with Python..."' >> /app/start.sh && \
+    echo '$PYTHON_CMD /app/start_uvicorn.py' >> /app/start.sh && \
     chmod +x /app/start.sh
 
 # Make sure the healthcheck script is executable

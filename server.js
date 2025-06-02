@@ -74,33 +74,67 @@ const apiProxy = createProxyMiddleware({
 // Use the proxy for API routes
 app.use('/api', apiProxy);
 
-// Function to install Python dependencies
+// Function to check if Python virtual environment exists
+function checkVirtualEnv() {
+  return new Promise((resolve, reject) => {
+    console.log('Checking Python virtual environment...');
+    const { exec } = require('child_process');
+    
+    // Check if venv directory exists
+    exec('[ -d "/app/venv" ] && echo "exists" || echo "not found"', (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error checking venv: ${error.message}`);
+        resolve(false);
+        return;
+      }
+      
+      if (stderr) {
+        console.error(`stderr: ${stderr}`);
+      }
+      
+      const exists = stdout.trim() === 'exists';
+      console.log(`Python virtual environment ${exists ? 'found' : 'not found'}.`);
+      resolve(exists);
+    });
+  });
+}
+
+// Function to install Python dependencies (fallback if needed)
 function installPythonDependencies() {
   return new Promise((resolve, reject) => {
     console.log('Installing Python dependencies...');
     const { spawn } = require('child_process');
     
-    // Use python3 explicitly to avoid any path issues
-    const pip = spawn('python3', ['-m', 'pip', 'install', '-r', 'requirements.txt']);
+    // Try to use the virtual environment if it exists
+    const pipPath = '/app/venv/bin/pip';
+    const fs = require('fs');
     
-    pip.stdout.on('data', (data) => {
-      console.log(`pip: ${data}`);
-    });
-    
-    pip.stderr.on('data', (data) => {
-      console.error(`pip error: ${data}`);
-    });
-    
-    pip.on('close', (code) => {
-      if (code === 0) {
-        console.log('Python dependencies installed successfully');
-        resolve();
-      } else {
-        console.error(`pip process exited with code ${code}`);
-        // Continue anyway to avoid blocking the server
-        resolve();
-      }
-    });
+    if (fs.existsSync(pipPath)) {
+      console.log('Using virtual environment pip');
+      const pip = spawn(pipPath, ['install', '-r', 'requirements.txt']);
+      
+      pip.stdout.on('data', (data) => {
+        console.log(`pip: ${data}`);
+      });
+      
+      pip.stderr.on('data', (data) => {
+        console.error(`pip error: ${data}`);
+      });
+      
+      pip.on('close', (code) => {
+        if (code === 0) {
+          console.log('Python dependencies installed successfully');
+          resolve();
+        } else {
+          console.error(`pip process exited with code ${code}`);
+          // Continue anyway to avoid blocking the server
+          resolve();
+        }
+      });
+    } else {
+      console.log('Virtual environment not found, skipping pip install');
+      resolve();
+    }
   });
 }
 
@@ -111,13 +145,21 @@ const server = app.listen(PORT, async () => {
   console.log(`API proxy available at /api/*`);
   
   try {
-    // Install Python dependencies
+    // Check for virtual environment
+    const venvExists = await checkVirtualEnv();
+    
+    // Install Python dependencies if needed
     console.log('Setting up environment...');
+    if (venvExists) {
+      console.log('Using existing virtual environment');
+    } else {
+      console.log('Virtual environment not found, will try fallback methods');
+    }
     await installPythonDependencies();
     
     // Start the FastAPI app in the background
     console.log('Starting FastAPI with uvicorn...');
-    startFastApi();
+    startFastApi(venvExists);
     
   } catch (err) {
     console.error('Error during startup:', err);
@@ -125,15 +167,27 @@ const server = app.listen(PORT, async () => {
 });
 
 // Function to start FastAPI
-function startFastApi() {
+function startFastApi(venvExists) {
   const { spawn } = require('child_process');
   
-  // Try different commands to start uvicorn
-  const commands = [
+  // Try different commands to start uvicorn, prioritizing the virtual environment
+  const commands = [];
+  
+  // If virtual environment exists, try those commands first
+  if (venvExists) {
+    commands.push(
+      { cmd: '/app/venv/bin/uvicorn', args: ['main:app', '--host', '0.0.0.0', '--port', '8000'] },
+      { cmd: '/app/venv/bin/python', args: ['-m', 'uvicorn', 'main:app', '--host', '0.0.0.0', '--port', '8000'] }
+    );
+  }
+  
+  // Fallback commands
+  commands.push(
     { cmd: 'uvicorn', args: ['main:app', '--host', '0.0.0.0', '--port', '8000'] },
     { cmd: 'python3', args: ['-m', 'uvicorn', 'main:app', '--host', '0.0.0.0', '--port', '8000'] },
-    { cmd: '/usr/local/bin/uvicorn', args: ['main:app', '--host', '0.0.0.0', '--port', '8000'] }
-  ];
+    { cmd: '/usr/local/bin/uvicorn', args: ['main:app', '--host', '0.0.0.0', '--port', '8000'] },
+    { cmd: 'python3', args: ['-c', 'import sys; print(sys.path); import uvicorn; uvicorn.run("main:app", host="0.0.0.0", port=8000)'] }
+  );
   
   // Try each command until one works
   tryNextCommand(commands, 0);
@@ -149,7 +203,16 @@ function tryNextCommand(commands, index) {
   const { cmd, args } = commands[index];
   console.log(`Attempting to start FastAPI with command: ${cmd} ${args.join(' ')}`);
   
-  const fastapi = require('child_process').spawn(cmd, args);
+  // Set environment variables for the child process
+  const env = { ...process.env };
+  
+  // If using venv commands, make sure PATH includes the venv bin directory
+  if (cmd.includes('/app/venv/bin/')) {
+    env.PATH = `/app/venv/bin:${env.PATH || ''}`;
+    env.VIRTUAL_ENV = '/app/venv';
+  }
+  
+  const fastapi = require('child_process').spawn(cmd, args, { env });
   
   fastapi.stdout.on('data', (data) => {
     const output = data.toString();

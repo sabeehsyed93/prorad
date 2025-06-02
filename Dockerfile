@@ -6,6 +6,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
+    python3-venv \
     python3-dev \
     build-essential \
     curl \
@@ -13,9 +14,12 @@ RUN apt-get update && apt-get install -y \
     net-tools \
     && rm -rf /var/lib/apt/lists/*
 
-# Create symbolic links for python and pip
-RUN ln -sf /usr/bin/python3 /usr/bin/python && \
-    ln -sf /usr/bin/pip3 /usr/bin/pip
+# Create a Python virtual environment
+RUN python3 -m venv /app/venv
+
+# Make sure we use the virtualenv
+ENV PATH="/app/venv/bin:$PATH"
+ENV VIRTUAL_ENV="/app/venv"
 
 # Copy package.json and install Node.js dependencies
 COPY package.json ./
@@ -24,20 +28,42 @@ RUN npm install
 # Copy Python requirements and install Python dependencies
 COPY requirements.txt ./
 
-# Install Python dependencies with verbose output
-RUN pip install --no-cache-dir --verbose -r requirements.txt && \
-    pip install --no-cache-dir --verbose uvicorn fastapi
+# Install Python dependencies in the virtual environment
+RUN /app/venv/bin/pip install --upgrade pip && \
+    /app/venv/bin/pip install --no-cache-dir -r requirements.txt && \
+    /app/venv/bin/pip install --no-cache-dir uvicorn fastapi
 
 # Verify uvicorn is installed and in PATH
-RUN which uvicorn || echo "uvicorn not found in PATH" && \
-    python -m pip list | grep uvicorn && \
-    python -m pip list | grep fastapi
+RUN /app/venv/bin/uvicorn --version && \
+    /app/venv/bin/pip list | grep uvicorn && \
+    /app/venv/bin/pip list | grep fastapi
 
 # Copy application code
 COPY . .
 
-# Create a startup script
-RUN echo '#!/bin/bash\necho "Starting server..."\nnode server.js' > /app/start.sh && \
+# Create a more robust startup script
+RUN echo '#!/bin/bash' > /app/start.sh && \
+    echo '' >> /app/start.sh && \
+    echo 'echo "Starting application..."' >> /app/start.sh && \
+    echo '' >> /app/start.sh && \
+    echo '# Ensure virtual environment is activated if it exists' >> /app/start.sh && \
+    echo 'if [ -d "/app/venv" ]; then' >> /app/start.sh && \
+    echo '  echo "Activating Python virtual environment"' >> /app/start.sh && \
+    echo '  export PATH="/app/venv/bin:$PATH"' >> /app/start.sh && \
+    echo '  export VIRTUAL_ENV="/app/venv"' >> /app/start.sh && \
+    echo '' >> /app/start.sh && \
+    echo '  # Verify Python and uvicorn are available' >> /app/start.sh && \
+    echo '  echo "Python version: $(/app/venv/bin/python --version)"' >> /app/start.sh && \
+    echo '  echo "Uvicorn version: $(/app/venv/bin/uvicorn --version || echo \"not found\")"' >> /app/start.sh && \
+    echo 'else' >> /app/start.sh && \
+    echo '  echo "Virtual environment not found, using system Python"' >> /app/start.sh && \
+    echo '  echo "Python version: $(python3 --version || echo \"not found\")"' >> /app/start.sh && \
+    echo '  echo "Uvicorn version: $(uvicorn --version || echo \"not found\")"' >> /app/start.sh && \
+    echo 'fi' >> /app/start.sh && \
+    echo '' >> /app/start.sh && \
+    echo '# Start the Node.js server' >> /app/start.sh && \
+    echo 'echo "Starting Node.js server..."' >> /app/start.sh && \
+    echo 'exec node server.js' >> /app/start.sh && \
     chmod +x /app/start.sh
 
 # Make sure the healthcheck script is executable

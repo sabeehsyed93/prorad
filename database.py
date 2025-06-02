@@ -41,6 +41,10 @@ engine = create_engine(
     DATABASE_URL,
     pool_pre_ping=True,  # Enable connection health checks
     pool_recycle=1800,  # Recycle connections after 30 minutes
+    connect_args={'connect_timeout': 30},  # Set connection timeout to 30 seconds
+    pool_size=5,  # Limit number of connections in the pool
+    max_overflow=10,  # Allow up to 10 connections to be created beyond the pool_size
+    pool_timeout=30,  # Timeout for getting a connection from the pool
     echo=False  # Disable duplicate SQL logging
 )
 
@@ -73,23 +77,39 @@ class Report(Base):
 
 # Create tables
 def create_tables():
-    try:
-        # Test the database connection first
-        with engine.connect() as conn:
-            logger.info("Database connection test successful")
-        
-        # Create tables
-        Base.metadata.create_all(bind=engine)
-        logger.info("Successfully created database tables")
-    except Exception as e:
-        logger.error(f"Error creating database tables: {str(e)}")
-        
-        # Don't crash the application in production, just log the error
-        if os.getenv("ENVIRONMENT") == "production" or os.getenv("RAILWAY_ENVIRONMENT"):
-            logger.warning("Running in production environment, continuing despite database error")
-        else:
-            # In development, raise the error for debugging
-            raise
+    max_retries = 3
+    retry_delay = 5  # seconds
+    
+    for attempt in range(max_retries):
+        try:
+            # Test the database connection first
+            with engine.connect() as conn:
+                logger.info(f"Database connection test successful on attempt {attempt + 1}")
+            
+            # Create tables
+            Base.metadata.create_all(bind=engine)
+            logger.info("Successfully created database tables")
+            return True
+        except Exception as e:
+            logger.error(f"Error creating database tables (attempt {attempt + 1}/{max_retries}): {str(e)}")
+            
+            if attempt < max_retries - 1:
+                import time
+                logger.info(f"Retrying in {retry_delay} seconds...")
+                time.sleep(retry_delay)
+                # Increase delay for next attempt (exponential backoff)
+                retry_delay *= 2
+            else:
+                # Don't crash the application in production, just log the error
+                if os.getenv("ENVIRONMENT") == "production" or os.getenv("RAILWAY_ENVIRONMENT") or \
+                   os.getenv("RAILWAY_PROJECT_ID"):
+                    logger.warning("Running in production environment, continuing despite database error")
+                    return False
+                else:
+                    # In development, raise the error for debugging
+                    raise
+    
+    return False
 
 # Get database session
 def get_db():

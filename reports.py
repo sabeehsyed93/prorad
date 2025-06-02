@@ -24,7 +24,7 @@ class ReportResponse(ReportBase):
     updated_at: datetime
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # CRUD operations
 @router.post("/reports/", response_model=ReportResponse)

@@ -181,22 +181,23 @@ def init_templates(db: Session):
 
 # Try to initialize the database and templates
 try:
-    # First try to create tables
-    try:
-        create_tables()
-        logger.info("Database tables created successfully")
-    except Exception as e:
-        logger.error(f"Failed to create database tables: {str(e)}")
-        logger.warning("Application will continue but database functionality may be limited")
+    # First try to create tables with retry logic already built into the function
+    db_success = create_tables()
     
-    # Then try to initialize templates
-    try:
-        with SessionLocal() as db:
-            init_templates(db)
-            logger.info("Successfully initialized default templates")
-    except Exception as e:
-        logger.warning(f"Error initializing default templates: {str(e)}")
-        logger.warning("Continuing without initializing templates")
+    # Then try to initialize templates if database was successful
+    if db_success:
+        try:
+            with SessionLocal() as db:
+                init_templates(db)
+                logger.info("Templates initialized successfully")
+        except Exception as e:
+            logger.warning(f"Error initializing default templates: {str(e)}")
+            logger.warning("Continuing without initializing templates")
+    else:
+        logger.warning("Skipping template initialization due to database connection issues")
+        
+    # Log readiness status
+    logger.info("API initialization complete - service is ready")
 except Exception as e:
     logger.error(f"Critical database initialization error: {str(e)}")
     logger.warning("Application will start with limited functionality")
@@ -451,25 +452,39 @@ Please write in a natural, flowing style as a radiologist would dictate. Avoid b
         
         report_id = None
         
-        # Try to save to database, but continue even if it fails
-        try:
-            # Create a new report
-            db_report = Report(
-                title=title,
-                raw_transcription=text,
-                processed_text=processed_text,
-                template_name=request.template_name
-            )
-            
-            # Save to database
-            db.add(db_report)
-            db.commit()
-            db.refresh(db_report)
-            report_id = db_report.id
-            logger.info(f"Successfully saved report to database with ID: {report_id}")
-        except Exception as e:
-            logger.error(f"Failed to save report to database: {str(e)}")
-            logger.warning("Continuing without saving to database")
+        # Try to save to database with retries
+        max_retries = 3
+        retry_delay = 1  # seconds
+        
+        for attempt in range(max_retries):
+            try:
+                db_report = Report(
+                    title=title,
+                    raw_transcription=text,
+                    processed_text=processed_text,
+                    template_name=request.template_name
+                )
+                db.add(db_report)
+                db.commit()
+                db.refresh(db_report)
+                report_id = db_report.id
+                logger.info(f"Successfully saved report to database with ID: {report_id}")
+                break  # Exit the retry loop on success
+            except Exception as e:
+                logger.error(f"Failed to save report to database (attempt {attempt+1}/{max_retries}): {str(e)}")
+                
+                if attempt < max_retries - 1:
+                    import time
+                    logger.info(f"Retrying database save in {retry_delay} seconds...")
+                    time.sleep(retry_delay)
+                    retry_delay *= 2  # Exponential backoff
+                    # Rollback the failed transaction before retrying
+                    try:
+                        db.rollback()
+                    except Exception as rollback_error:
+                        logger.error(f"Error rolling back transaction: {str(rollback_error)}")
+                else:
+                    logger.warning("Exhausted all retries. Continuing without saving to database.")
         
         return {
             "processed_text": processed_text,

@@ -3,18 +3,45 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Add middleware to log all requests
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+  next();
+});
+
 // Simple health check endpoint that always returns 200
+// Railway will check this endpoint to determine if the service is healthy
 app.get('/_health', (req, res) => {
-  console.log('Health check received');
-  res.status(200).json({ status: 'ok' });
+  console.log('Health check received at /_health');
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Alternative health check endpoints
 app.get('/healthz', (req, res) => {
-  console.log('Alternative health check received');
-  res.status(200).json({ status: 'ok' });
+  console.log('Health check received at /healthz');
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Proxy all other requests to the FastAPI app
+app.get('/health', (req, res) => {
+  console.log('Health check received at /health');
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// Fallback route for the root path - respond before setting up the proxy
+app.get('/', (req, res) => {
+  res.status(200).json({ 
+    message: 'Radiology Transcription API Gateway',
+    api: '/api',
+    health: '/_health',
+    status: 'online',
+    version: '1.0.0'
+  });
+});
+
+// Variable to track if FastAPI is running
+let fastApiRunning = false;
+
+// Proxy middleware with conditional forwarding
 const apiProxy = createProxyMiddleware({
   target: 'http://localhost:8000',
   changeOrigin: true,
@@ -22,31 +49,39 @@ const apiProxy = createProxyMiddleware({
   pathRewrite: {
     '^/api': '', // remove /api prefix when forwarding to FastAPI
   },
+  onProxyReq: (proxyReq, req, res) => {
+    console.log(`Proxying request to FastAPI: ${req.method} ${req.url}`);
+  },
   onError: (err, req, res) => {
     console.error('Proxy error:', err);
-    res.status(500).json({ error: 'Proxy error', message: err.message });
+    // If FastAPI is not running yet, return a 503 Service Unavailable
+    if (!fastApiRunning) {
+      res.status(503).json({ 
+        error: 'Service Unavailable', 
+        message: 'The API is starting up, please try again in a moment',
+        status: 'initializing'
+      });
+    } else {
+      res.status(500).json({ 
+        error: 'Proxy error', 
+        message: err.message,
+        status: 'error'
+      });
+    }
   }
 });
 
-// Use the proxy for all routes except health checks
+// Use the proxy for API routes
 app.use('/api', apiProxy);
-
-// Fallback route for the root path
-app.get('/', (req, res) => {
-  res.status(200).json({ 
-    message: 'Radiology Transcription API Gateway',
-    api: '/api',
-    health: '/_health',
-    status: 'online'
-  });
-});
 
 // Function to install Python dependencies
 function installPythonDependencies() {
   return new Promise((resolve, reject) => {
     console.log('Installing Python dependencies...');
     const { spawn } = require('child_process');
-    const pip = spawn('pip', ['install', '-r', 'requirements.txt']);
+    
+    // Use python3 explicitly to avoid any path issues
+    const pip = spawn('python3', ['-m', 'pip', 'install', '-r', 'requirements.txt']);
     
     pip.stdout.on('data', (data) => {
       console.log(`pip: ${data}`);
@@ -69,48 +104,90 @@ function installPythonDependencies() {
   });
 }
 
-// Start the server
-app.listen(PORT, async () => {
+// Start the server immediately to respond to health checks
+const server = app.listen(PORT, async () => {
   console.log(`Express server running on port ${PORT}`);
   console.log(`Health check available at /_health`);
   console.log(`API proxy available at /api/*`);
   
-  // First install Python dependencies
   try {
+    // Install Python dependencies
+    console.log('Setting up environment...');
     await installPythonDependencies();
+    
+    // Start the FastAPI app in the background
+    console.log('Starting FastAPI with uvicorn...');
+    startFastApi();
+    
   } catch (err) {
-    console.error('Error installing Python dependencies:', err);
+    console.error('Error during startup:', err);
   }
-  
-  // Start the FastAPI app in the background
+});
+
+// Function to start FastAPI
+function startFastApi() {
   const { spawn } = require('child_process');
-  console.log('Starting FastAPI with uvicorn...');
   
-  // Try to use the full path to uvicorn if available
-  let uvicornCommand = 'uvicorn';
-  try {
-    // Check if we can find the uvicorn path
-    const { execSync } = require('child_process');
-    const uvicornPath = execSync('which uvicorn').toString().trim();
-    if (uvicornPath) {
-      console.log(`Found uvicorn at: ${uvicornPath}`);
-      uvicornCommand = uvicornPath;
-    }
-  } catch (err) {
-    console.warn('Could not determine uvicorn path, using default command');
+  // Try different commands to start uvicorn
+  const commands = [
+    { cmd: 'uvicorn', args: ['main:app', '--host', '0.0.0.0', '--port', '8000'] },
+    { cmd: 'python3', args: ['-m', 'uvicorn', 'main:app', '--host', '0.0.0.0', '--port', '8000'] },
+    { cmd: '/usr/local/bin/uvicorn', args: ['main:app', '--host', '0.0.0.0', '--port', '8000'] }
+  ];
+  
+  // Try each command until one works
+  tryNextCommand(commands, 0);
+}
+
+// Function to try each uvicorn command
+function tryNextCommand(commands, index) {
+  if (index >= commands.length) {
+    console.error('All uvicorn start commands failed');
+    return;
   }
   
-  const fastapi = spawn(uvicornCommand, ['main:app', '--host', '0.0.0.0', '--port', '8000']);
+  const { cmd, args } = commands[index];
+  console.log(`Attempting to start FastAPI with command: ${cmd} ${args.join(' ')}`);
+  
+  const fastapi = require('child_process').spawn(cmd, args);
   
   fastapi.stdout.on('data', (data) => {
-    console.log(`FastAPI: ${data}`);
+    const output = data.toString();
+    console.log(`FastAPI: ${output}`);
+    
+    // If we see the server started message, mark FastAPI as running
+    if (output.includes('Application startup complete') || output.includes('Uvicorn running')) {
+      fastApiRunning = true;
+      console.log('FastAPI is now running and ready to accept requests');
+    }
   });
   
   fastapi.stderr.on('data', (data) => {
     console.error(`FastAPI error: ${data}`);
   });
   
+  fastapi.on('error', (err) => {
+    console.error(`Failed to start FastAPI with ${cmd}: ${err.message}`);
+    // Try the next command
+    tryNextCommand(commands, index + 1);
+  });
+  
   fastapi.on('close', (code) => {
+    fastApiRunning = false;
     console.log(`FastAPI process exited with code ${code}`);
+    
+    // If it failed immediately, try the next command
+    if (code !== 0 && index < commands.length - 1) {
+      tryNextCommand(commands, index + 1);
+    }
+  });
+}
+
+// Handle graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, shutting down gracefully');
+  server.close(() => {
+    console.log('HTTP server closed');
+    process.exit(0);
   });
 });

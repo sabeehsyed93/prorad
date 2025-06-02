@@ -41,15 +41,66 @@ app.get('/', (req, res) => {
   });
 });
 
+// Function to install Python dependencies
+function installPythonDependencies() {
+  return new Promise((resolve, reject) => {
+    console.log('Installing Python dependencies...');
+    const { spawn } = require('child_process');
+    const pip = spawn('pip', ['install', '-r', 'requirements.txt']);
+    
+    pip.stdout.on('data', (data) => {
+      console.log(`pip: ${data}`);
+    });
+    
+    pip.stderr.on('data', (data) => {
+      console.error(`pip error: ${data}`);
+    });
+    
+    pip.on('close', (code) => {
+      if (code === 0) {
+        console.log('Python dependencies installed successfully');
+        resolve();
+      } else {
+        console.error(`pip process exited with code ${code}`);
+        // Continue anyway to avoid blocking the server
+        resolve();
+      }
+    });
+  });
+}
+
 // Start the server
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Express server running on port ${PORT}`);
   console.log(`Health check available at /_health`);
   console.log(`API proxy available at /api/*`);
   
+  // First install Python dependencies
+  try {
+    await installPythonDependencies();
+  } catch (err) {
+    console.error('Error installing Python dependencies:', err);
+  }
+  
   // Start the FastAPI app in the background
   const { spawn } = require('child_process');
-  const fastapi = spawn('uvicorn', ['main:app', '--host', '0.0.0.0', '--port', '8000']);
+  console.log('Starting FastAPI with uvicorn...');
+  
+  // Try to use the full path to uvicorn if available
+  let uvicornCommand = 'uvicorn';
+  try {
+    // Check if we can find the uvicorn path
+    const { execSync } = require('child_process');
+    const uvicornPath = execSync('which uvicorn').toString().trim();
+    if (uvicornPath) {
+      console.log(`Found uvicorn at: ${uvicornPath}`);
+      uvicornCommand = uvicornPath;
+    }
+  } catch (err) {
+    console.warn('Could not determine uvicorn path, using default command');
+  }
+  
+  const fastapi = spawn(uvicornCommand, ['main:app', '--host', '0.0.0.0', '--port', '8000']);
   
   fastapi.stdout.on('data', (data) => {
     console.log(`FastAPI: ${data}`);

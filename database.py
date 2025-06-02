@@ -18,6 +18,38 @@ pg_user = os.getenv("PGUSER") or os.getenv("DB_USER")
 pg_password = os.getenv("PGPASSWORD") or os.getenv("DB_PASSWORD")
 pg_database = os.getenv("PGDATABASE") or os.getenv("DB_NAME")
 
+# Log all environment variables for debugging
+logger.info("Database-related environment variables:")
+for key, value in os.environ.items():
+    if any(db_key in key.upper() for db_key in ["PG", "DB_", "DATABASE"]):
+        # Mask password
+        if "PASSWORD" in key.upper() and value:
+            masked_value = value[:2] + "*****" + value[-2:] if len(value) > 6 else "*****"
+            logger.info(f"  {key}={masked_value}")
+        else:
+            logger.info(f"  {key}={value}")
+
+# Check if we're in Railway environment
+is_railway = bool(os.getenv("RAILWAY_ENVIRONMENT") or os.getenv("RAILWAY_PROJECT_ID"))
+if is_railway:
+    logger.info("Running in Railway environment")
+    # Try to ping the PostgreSQL host to check connectivity
+    if pg_host:
+        import subprocess
+        try:
+            logger.info(f"Attempting to ping PostgreSQL host: {pg_host}")
+            result = subprocess.run(["ping", "-c", "1", pg_host], 
+                                  stdout=subprocess.PIPE, 
+                                  stderr=subprocess.PIPE,
+                                  timeout=5)
+            if result.returncode == 0:
+                logger.info(f"Successfully pinged {pg_host}")
+            else:
+                logger.warning(f"Failed to ping {pg_host}: {result.stderr.decode()}")
+        except Exception as e:
+            logger.warning(f"Error pinging PostgreSQL host: {str(e)}")
+
+
 # Check if we have all the individual components
 if pg_host and pg_port and pg_user and pg_password and pg_database:
     # Construct the DATABASE_URL from individual components
@@ -57,25 +89,113 @@ is_postgres = "postgresql" in DATABASE_URL
 
 # Set up engine with appropriate settings based on database type
 if is_postgres:
-    # PostgreSQL-specific settings
-    engine = create_engine(
-        DATABASE_URL,
-        pool_pre_ping=True,  # Enable connection health checks
-        pool_recycle=300,    # Recycle connections after 5 minutes (shorter for Railway)
-        connect_args={
-            'connect_timeout': 10,  # Shorter connection timeout
-            'application_name': 'rad_transcription',  # Identify our app in PostgreSQL logs
-            'keepalives': 1,       # Enable TCP keepalives
-            'keepalives_idle': 30, # Seconds before sending keepalive
-            'keepalives_interval': 10, # Seconds between keepalives
-            'keepalives_count': 5   # Max number of keepalives
-        },
-        pool_size=3,         # Smaller pool size for Railway's limits
-        max_overflow=5,       # Fewer overflow connections
-        pool_timeout=10,      # Shorter pool timeout
-        echo=False            # Disable duplicate SQL logging
-    )
-    logger.info("Configured PostgreSQL engine with Railway-optimized settings")
+    # Handle Railway's internal vs external PostgreSQL access
+    if is_railway and "postgres.railway.internal" in DATABASE_URL:
+        # Try both internal and external URLs
+        logger.info("Attempting to use Railway's internal PostgreSQL connection")
+        
+        # Also check for external URL as fallback
+        external_url = os.getenv("DATABASE_PUBLIC_URL")
+        if external_url:
+            if external_url.startswith("postgres://"):
+                external_url = external_url.replace("postgres://", "postgresql://", 1)
+            logger.info("Found external DATABASE_PUBLIC_URL as fallback")
+        
+        # Try to use the internal URL first
+        try:
+            # PostgreSQL-specific settings with shorter timeouts for Railway internal networking
+            engine = create_engine(
+                DATABASE_URL,
+                pool_pre_ping=True,  # Enable connection health checks
+                pool_recycle=300,    # Recycle connections after 5 minutes
+                connect_args={
+                    'connect_timeout': 5,  # Shorter connection timeout for internal network
+                    'application_name': 'rad_transcription',
+                    'keepalives': 1,
+                    'keepalives_idle': 30,
+                    'keepalives_interval': 10,
+                    'keepalives_count': 5
+                },
+                pool_size=2,         # Smaller pool for Railway
+                max_overflow=3,
+                pool_timeout=5,
+                echo=False
+            )
+            
+            # Test the connection immediately
+            with engine.connect() as conn:
+                conn.execute("SELECT 1")
+                logger.info("Successfully connected to Railway internal PostgreSQL")
+        except Exception as e:
+            logger.warning(f"Failed to connect to Railway internal PostgreSQL: {str(e)}")
+            
+            # Fall back to external URL if available
+            if external_url:
+                logger.info("Falling back to external DATABASE_PUBLIC_URL")
+                try:
+                    engine = create_engine(
+                        external_url,
+                        pool_pre_ping=True,
+                        pool_recycle=300,
+                        connect_args={
+                            'connect_timeout': 10,
+                            'application_name': 'rad_transcription',
+                            'keepalives': 1,
+                            'keepalives_idle': 30,
+                            'keepalives_interval': 10,
+                            'keepalives_count': 5
+                        },
+                        pool_size=2,
+                        max_overflow=3,
+                        pool_timeout=10,
+                        echo=False
+                    )
+                    # Test the connection
+                    with engine.connect() as conn:
+                        conn.execute("SELECT 1")
+                        logger.info("Successfully connected to Railway external PostgreSQL")
+                        # Store that we're using the external URL
+                        logger.info("Using external PostgreSQL URL for all future connections")
+                        # We don't need to modify the global DATABASE_URL as we've already created the engine
+                except Exception as ex:
+                    logger.error(f"Failed to connect to Railway external PostgreSQL: {str(ex)}")
+                    # Fall back to SQLite if both connection methods fail
+                    logger.warning("Falling back to SQLite as last resort")
+                    DATABASE_URL = "sqlite:///./radiology_reports.db"
+                    engine = create_engine(
+                        DATABASE_URL,
+                        connect_args={'check_same_thread': False},
+                        echo=False
+                    )
+            else:
+                # No external URL available, fall back to SQLite
+                logger.warning("No external DATABASE_PUBLIC_URL available, falling back to SQLite")
+                DATABASE_URL = "sqlite:///./radiology_reports.db"
+                engine = create_engine(
+                    DATABASE_URL,
+                    connect_args={'check_same_thread': False},
+                    echo=False
+                )
+    else:
+        # Standard PostgreSQL settings for non-Railway or when using external URL directly
+        engine = create_engine(
+            DATABASE_URL,
+            pool_pre_ping=True,  # Enable connection health checks
+            pool_recycle=300,    # Recycle connections after 5 minutes
+            connect_args={
+                'connect_timeout': 10,  # Connection timeout
+                'application_name': 'rad_transcription',  # Identify our app in PostgreSQL logs
+                'keepalives': 1,       # Enable TCP keepalives
+                'keepalives_idle': 30, # Seconds before sending keepalive
+                'keepalives_interval': 10, # Seconds between keepalives
+                'keepalives_count': 5   # Max number of keepalives
+            },
+            pool_size=3,
+            max_overflow=5,
+            pool_timeout=10,
+            echo=False
+        )
+        logger.info("Configured PostgreSQL engine with standard settings")
 else:
     # SQLite settings
     engine = create_engine(

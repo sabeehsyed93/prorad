@@ -1,1 +1,1 @@
-web: uvicorn main:app --host 0.0.0.0 --port $PORT --health-path /_health
+web: node server.js

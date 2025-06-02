@@ -11,10 +11,16 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const { spawn } = require('child_process');
 const fs = require('fs');
 
-// Hardcoded ports
+// Hardcoded ports - NEVER use environment variables for these
 const PORT = 3000;
 const FASTAPI_PORT = 8000;
 
+// Log all environment variables for debugging
+console.log('Environment variables:');
+console.log(`Original PORT=${process.env.PORT}`);
+console.log(`Original FASTAPI_PORT=${process.env.FASTAPI_PORT}`);
+
+// Log our hardcoded ports
 console.log(`Starting direct_start.js with hardcoded ports: NODE=${PORT}, FASTAPI=${FASTAPI_PORT}`);
 
 // Create Express server

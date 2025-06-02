@@ -28,16 +28,31 @@ def main():
     for file in os.listdir('.'):
         logger.info(f"  - {file}")
     
-    # Hardcoded settings
+    # Hardcoded settings - NEVER use environment variables for port
     host = "0.0.0.0"
-    port = 8000
+    port = 8000  # This must be an integer, not a string
     
-    logger.info(f"Starting uvicorn with host={host}, port={port}")
+    # Log environment variables for debugging
+    logger.info("Environment variables:")
+    for key, value in os.environ.items():
+        if key in ['PORT', 'FASTAPI_PORT', 'NODE_PORT']:
+            logger.info(f"  {key}={value}")
+    
+    logger.info(f"Starting uvicorn with host={host}, port={port} (type: {type(port).__name__})")
     
     try:
+        # Ensure port is an integer
+        if not isinstance(port, int):
+            logger.error(f"Port must be an integer, got {port} of type {type(port).__name__}")
+            sys.exit(1)
+            
+        logger.info("Starting uvicorn with explicit arguments")
         uvicorn.run("main:app", host=host, port=port, log_level="info")
     except Exception as e:
         logger.error(f"Error starting uvicorn: {e}")
+        logger.error(f"Error type: {type(e).__name__}")
+        import traceback
+        logger.error(f"Traceback: {traceback.format_exc()}")
         sys.exit(1)
 
 if __name__ == "__main__":

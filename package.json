@@ -2,9 +2,9 @@
   "name": "radiology-transcription-api-gateway",
   "version": "1.0.0",
   "description": "API Gateway for Radiology Transcription Service",
-  "main": "server.js",
+  "main": "direct_start.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node direct_start.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

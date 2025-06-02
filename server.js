@@ -169,86 +169,64 @@ const server = app.listen(PORT, async () => {
 // Function to start FastAPI
 function startFastApi(venvExists) {
   const { spawn } = require('child_process');
+  const fs = require('fs');
   
-  // Hardcode the FastAPI port to 8000
-  const fastApiPort = 8000;
-  console.log(`Using hardcoded FastAPI port: ${fastApiPort}`);
+  console.log('Starting FastAPI using Python script...');
   
-  // Try different commands to start uvicorn, prioritizing the virtual environment
-  const commands = [];
+  // Use our dedicated Python script to start uvicorn
+  let pythonCmd, scriptPath;
   
-  // If virtual environment exists, try those commands first
-  if (venvExists) {
-    commands.push(
-      { cmd: '/app/venv/bin/uvicorn', args: ['main:app', '--host', '0.0.0.0', '--port', '8000'] },
-      { cmd: '/app/venv/bin/python', args: ['-m', 'uvicorn', 'main:app', '--host', '0.0.0.0', '--port', '8000'] }
-    );
-  }
-  
-  // Fallback commands
-  commands.push(
-    { cmd: 'uvicorn', args: ['main:app', '--host', '0.0.0.0', '--port', '8000'] },
-    { cmd: 'python3', args: ['-m', 'uvicorn', 'main:app', '--host', '0.0.0.0', '--port', '8000'] },
-    { cmd: '/usr/local/bin/uvicorn', args: ['main:app', '--host', '0.0.0.0', '--port', '8000'] },
-    { cmd: 'python3', args: ['-c', 'import sys; print(sys.path); import uvicorn; uvicorn.run("main:app", host="0.0.0.0", port=8000)'] }
-  );
-  
-  // Try each command until one works
-  tryNextCommand(commands, 0);
-}
-
-// Function to try each uvicorn command
-function tryNextCommand(commands, index) {
-  if (index >= commands.length) {
-    console.error('All uvicorn start commands failed');
+  // Check if our start script exists
+  if (fs.existsSync('./start_uvicorn.py')) {
+    console.log('Found start_uvicorn.py script');
+    scriptPath = './start_uvicorn.py';
+  } else {
+    console.error('start_uvicorn.py not found!');
     return;
   }
   
-  const { cmd, args } = commands[index];
-  console.log(`Attempting to start FastAPI with command: ${cmd} ${args.join(' ')}`);
-  
-  // Set environment variables for the child process
-  const env = { ...process.env };
-  
-  // If using venv commands, make sure PATH includes the venv bin directory
-  if (cmd.includes('/app/venv/bin/')) {
-    env.PATH = `/app/venv/bin:${env.PATH || ''}`;
-    env.VIRTUAL_ENV = '/app/venv';
+  // Determine which Python executable to use
+  if (venvExists && fs.existsSync('/app/venv/bin/python')) {
+    pythonCmd = '/app/venv/bin/python';
+    console.log('Using virtual environment Python');
+  } else {
+    pythonCmd = 'python3';
+    console.log('Using system Python');
   }
   
-  const fastapi = require('child_process').spawn(cmd, args, { env });
+  // Log the command we're about to run
+  console.log(`Running: ${pythonCmd} ${scriptPath}`);
   
-  fastapi.stdout.on('data', (data) => {
-    const output = data.toString();
-    console.log(`FastAPI: ${output}`);
-    
-    // If we see the server started message, mark FastAPI as running
-    if (output.includes('Application startup complete') || output.includes('Uvicorn running')) {
-      fastApiRunning = true;
-      console.log('FastAPI is now running and ready to accept requests');
-    }
-  });
-  
-  fastapi.stderr.on('data', (data) => {
-    console.error(`FastAPI error: ${data}`);
+  // Start the Python script
+  const fastapi = spawn(pythonCmd, [scriptPath], {
+    stdio: 'inherit' // This will show Python output directly in the Node.js logs
   });
   
   fastapi.on('error', (err) => {
-    console.error(`Failed to start FastAPI with ${cmd}: ${err.message}`);
-    // Try the next command
-    tryNextCommand(commands, index + 1);
+    console.error(`Failed to start Python script: ${err.message}`);
   });
   
   fastapi.on('close', (code) => {
     fastApiRunning = false;
-    console.log(`FastAPI process exited with code ${code}`);
-    
-    // If it failed immediately, try the next command
-    if (code !== 0 && index < commands.length - 1) {
-      tryNextCommand(commands, index + 1);
-    }
+    console.log(`Python script process exited with code ${code}`);
   });
+  
+  // Set a timeout to check if FastAPI is running
+  setTimeout(() => {
+    if (!fastApiRunning) {
+      console.log('FastAPI not detected as running after timeout, but continuing anyway');
+    }
+  }, 5000);
 }
+
+// Listen for FastAPI startup in the logs
+process.on('log', (data) => {
+  if (typeof data === 'string' && 
+      (data.includes('Application startup complete') || data.includes('Uvicorn running'))) {
+    fastApiRunning = true;
+    console.log('FastAPI is now running and ready to accept requests');
+  }
+});
 
 // Handle graceful shutdown
 process.on('SIGTERM', () => {

@@ -170,6 +170,10 @@ const server = app.listen(PORT, async () => {
 function startFastApi(venvExists) {
   const { spawn } = require('child_process');
   
+  // Hardcode the FastAPI port to 8000
+  const fastApiPort = 8000;
+  console.log(`Using hardcoded FastAPI port: ${fastApiPort}`);
+  
   // Try different commands to start uvicorn, prioritizing the virtual environment
   const commands = [];
   

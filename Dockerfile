@@ -46,6 +46,13 @@ RUN echo '#!/bin/bash' > /app/start.sh && \
     echo '' >> /app/start.sh && \
     echo 'echo "Starting application..."' >> /app/start.sh && \
     echo '' >> /app/start.sh && \
+    echo '# Print environment variables for debugging' >> /app/start.sh && \
+    echo 'echo "Environment variables:"' >> /app/start.sh && \
+    echo 'echo "PORT=$PORT"' >> /app/start.sh && \
+    echo '' >> /app/start.sh && \
+    echo '# Hardcode FastAPI port to 8000' >> /app/start.sh && \
+    echo 'echo "Using hardcoded FastAPI port: 8000"' >> /app/start.sh && \
+    echo '' >> /app/start.sh && \
     echo '# Ensure virtual environment is activated if it exists' >> /app/start.sh && \
     echo 'if [ -d "/app/venv" ]; then' >> /app/start.sh && \
     echo '  echo "Activating Python virtual environment"' >> /app/start.sh && \
@@ -78,6 +85,7 @@ EXPOSE 3000
 
 # Set environment variables
 ENV PORT=3000
+ENV FASTAPI_PORT=8000
 ENV PYTHONUNBUFFERED=1
 
 # Command to run the application

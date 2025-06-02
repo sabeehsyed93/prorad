@@ -41,36 +41,32 @@ RUN /app/venv/bin/uvicorn --version && \
 # Copy application code
 COPY . .
 
-# Create a more robust startup script
+# Create a simple startup script that uses our direct_start.js
 RUN echo '#!/bin/bash' > /app/start.sh && \
     echo '' >> /app/start.sh && \
-    echo 'echo "Starting application..."' >> /app/start.sh && \
+    echo 'echo "Starting application with direct_start.js..."' >> /app/start.sh && \
     echo '' >> /app/start.sh && \
     echo '# Print environment variables for debugging' >> /app/start.sh && \
     echo 'echo "Environment variables:"' >> /app/start.sh && \
     echo 'echo "PORT=$PORT"' >> /app/start.sh && \
     echo '' >> /app/start.sh && \
-    echo '# Hardcode FastAPI port to 8000' >> /app/start.sh && \
-    echo 'echo "Using hardcoded FastAPI port: 8000"' >> /app/start.sh && \
-    echo '' >> /app/start.sh && \
-    echo '# Ensure virtual environment is activated if it exists' >> /app/start.sh && \
+    echo '# Ensure virtual environment is activated' >> /app/start.sh && \
     echo 'if [ -d "/app/venv" ]; then' >> /app/start.sh && \
     echo '  echo "Activating Python virtual environment"' >> /app/start.sh && \
     echo '  export PATH="/app/venv/bin:$PATH"' >> /app/start.sh && \
     echo '  export VIRTUAL_ENV="/app/venv"' >> /app/start.sh && \
-    echo '' >> /app/start.sh && \
-    echo '  # Verify Python and uvicorn are available' >> /app/start.sh && \
     echo '  echo "Python version: $(/app/venv/bin/python --version)"' >> /app/start.sh && \
-    echo '  echo "Uvicorn version: $(/app/venv/bin/uvicorn --version || echo \"not found\")"' >> /app/start.sh && \
     echo 'else' >> /app/start.sh && \
     echo '  echo "Virtual environment not found, using system Python"' >> /app/start.sh && \
-    echo '  echo "Python version: $(python3 --version || echo \"not found\")"' >> /app/start.sh && \
-    echo '  echo "Uvicorn version: $(uvicorn --version || echo \"not found\")"' >> /app/start.sh && \
+    echo '  echo "Python version: $(python3 --version)"' >> /app/start.sh && \
     echo 'fi' >> /app/start.sh && \
     echo '' >> /app/start.sh && \
-    echo '# Start the Node.js server' >> /app/start.sh && \
-    echo 'echo "Starting Node.js server..."' >> /app/start.sh && \
-    echo 'exec node server.js' >> /app/start.sh && \
+    echo '# Make direct_start.js executable' >> /app/start.sh && \
+    echo 'chmod +x /app/direct_start.js' >> /app/start.sh && \
+    echo '' >> /app/start.sh && \
+    echo '# Start the application using our direct starter script' >> /app/start.sh && \
+    echo 'echo "Starting direct_start.js..."' >> /app/start.sh && \
+    echo 'exec node /app/direct_start.js' >> /app/start.sh && \
     chmod +x /app/start.sh
 
 # Make sure the healthcheck script is executable

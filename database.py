@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, ForeignKey, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from datetime import datetime
@@ -124,7 +124,8 @@ if is_postgres:
             
             # Test the connection immediately
             with engine.connect() as conn:
-                conn.execute("SELECT 1")
+                # Use text imported at the top of the file
+                conn.execute(text("SELECT 1"))
                 logger.info("Successfully connected to Railway internal PostgreSQL")
         except Exception as e:
             logger.warning(f"Failed to connect to Railway internal PostgreSQL: {str(e)}")
@@ -152,7 +153,8 @@ if is_postgres:
                     )
                     # Test the connection
                     with engine.connect() as conn:
-                        conn.execute("SELECT 1")
+                        # Use text imported at the top of the file
+                        conn.execute(text("SELECT 1"))
                         logger.info("Successfully connected to Railway external PostgreSQL")
                         # Store that we're using the external URL
                         logger.info("Using external PostgreSQL URL for all future connections")
@@ -250,7 +252,8 @@ def create_tables():
                 # First check if we can connect at all
                 with engine.connect() as conn:
                     # Just run a simple query to verify connection
-                    conn.execute("SELECT 1")
+                    # Use text imported at the top of the file
+                    conn.execute(text("SELECT 1"))
                     logger.info(f"PostgreSQL connection verified on attempt {attempt + 1}")
                 
                 # If connection succeeded, create tables
@@ -275,7 +278,8 @@ def create_tables():
                             public_url = os.getenv("DATABASE_PUBLIC_URL")
                             test_engine = create_engine(public_url, connect_args={'connect_timeout': 5})
                             with test_engine.connect() as test_conn:
-                                test_conn.execute("SELECT 1")
+                                # Use text imported at the top of the file
+                                test_conn.execute(text("SELECT 1"))
                                 logger.info("Public URL connection successful")
                                 logger.warning("Consider updating your configuration to use DATABASE_PUBLIC_URL")
                         except Exception as public_e:

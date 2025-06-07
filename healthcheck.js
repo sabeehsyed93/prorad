@@ -10,12 +10,12 @@
 const http = require('http');
 const https = require('https');
 
-// Configuration
-const PORT = process.env.PORT || 3000;
+// Configuration - use hardcoded port 3000 to match direct_start.js
+const PORT = 3000; // Hardcoded to match our application port
 const HOST = process.env.HOST || 'localhost';
 const PATH = '/_health';
-const MAX_RETRIES = 3;
-const RETRY_DELAY = 2000; // ms
+const MAX_RETRIES = 5; // Increase retries
+const RETRY_DELAY = 5000; // Increase delay to 5 seconds
 
 // Function to make the health check request
 function makeRequest(retry = 0) {

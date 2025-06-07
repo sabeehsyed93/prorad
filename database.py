@@ -52,8 +52,8 @@ if is_railway:
 
 # Check if we have all the individual components
 if pg_host and pg_port and pg_user and pg_password and pg_database:
-    # Construct the DATABASE_URL from individual components
-    DATABASE_URL = f"postgresql://{pg_user}:{pg_password}@{pg_host}:{pg_port}/{pg_database}"
+    # Construct the PostgreSQL URL with connection parameters
+    DATABASE_URL = f"postgresql://{pg_user}:{pg_password}@{pg_host}:{pg_port}/{pg_database}?connect_timeout=10&pool_timeout=30&pool_recycle=1800"
     logger.info(f"Using constructed PostgreSQL connection from individual environment variables")
     logger.info(f"Host: {pg_host}, Port: {pg_port}, Database: {pg_database}")
 else:
@@ -103,22 +103,22 @@ if is_postgres:
         
         # Try to use the internal URL first
         try:
-            # PostgreSQL-specific settings with shorter timeouts for Railway internal networking
+            # PostgreSQL-specific settings with longer timeouts for Railway internal networking
             engine = create_engine(
                 DATABASE_URL,
                 pool_pre_ping=True,  # Enable connection health checks
-                pool_recycle=300,    # Recycle connections after 5 minutes
+                pool_recycle=1800,   # Recycle connections after 30 minutes
                 connect_args={
-                    'connect_timeout': 5,  # Shorter connection timeout for internal network
+                    'connect_timeout': 30,  # Increase timeout to 30 seconds
                     'application_name': 'rad_transcription',
                     'keepalives': 1,
                     'keepalives_idle': 30,
                     'keepalives_interval': 10,
                     'keepalives_count': 5
                 },
-                pool_size=2,         # Smaller pool for Railway
-                max_overflow=3,
-                pool_timeout=5,
+                pool_size=1,         # Minimize connections
+                max_overflow=2,
+                pool_timeout=30,
                 echo=False
             )
             
@@ -134,22 +134,22 @@ if is_postgres:
             if external_url:
                 logger.info("Falling back to external DATABASE_PUBLIC_URL")
                 try:
+                    # Create engine with optimized settings for Railway
                     engine = create_engine(
                         external_url,
-                        pool_pre_ping=True,
-                        pool_recycle=300,
+                        pool_size=1,  # Reduce pool size to minimize connections
+                        max_overflow=2,
+                        pool_timeout=30,
+                        pool_recycle=1800,
+                        pool_pre_ping=True,  # Check connection validity before using
                         connect_args={
-                            'connect_timeout': 10,
+                            'connect_timeout': 30,  # Increase timeout to 30 seconds
                             'application_name': 'rad_transcription',
                             'keepalives': 1,
                             'keepalives_idle': 30,
                             'keepalives_interval': 10,
                             'keepalives_count': 5
-                        },
-                        pool_size=2,
-                        max_overflow=3,
-                        pool_timeout=10,
-                        echo=False
+                        }
                     )
                     # Test the connection
                     with engine.connect() as conn:
@@ -158,7 +158,6 @@ if is_postgres:
                         logger.info("Successfully connected to Railway external PostgreSQL")
                         # Store that we're using the external URL
                         logger.info("Using external PostgreSQL URL for all future connections")
-                        # We don't need to modify the global DATABASE_URL as we've already created the engine
                 except Exception as ex:
                     logger.error(f"Failed to connect to Railway external PostgreSQL: {str(ex)}")
                     # Fall back to SQLite if both connection methods fail
